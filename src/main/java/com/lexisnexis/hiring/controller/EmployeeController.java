@@ -27,7 +27,7 @@ public class EmployeeController {
     @PostMapping("/save")
     public ResponseEntity<String> saveUser(@RequestBody Employee employee) {
         Employee newEmployee=employeeService.saveEmployee(employee);
-        return ResponseEntity.ok("Employee saved with id"+newEmployee.getEmployeeId());
+        return ResponseEntity.ok("Employee saved with id"+newEmployee);
     }
     @PostMapping("/login")
     public ResponseEntity<JWTResponse> loginUser(@RequestBody Employee employeeRequest)

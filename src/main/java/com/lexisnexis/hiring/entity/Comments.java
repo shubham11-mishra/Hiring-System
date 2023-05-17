@@ -3,9 +3,11 @@ package com.lexisnexis.hiring.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -23,7 +25,11 @@ public class Comments {
     private Candidate candidate;
     @OneToOne
     private Employee employee;
-    private Date createdDate;
-    private Date updatedDate;
-    private boolean isDeleted;
+
+    @CreationTimestamp
+    private LocalDateTime createdDate;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedDate;
+    private boolean isDeleted = false;
 }

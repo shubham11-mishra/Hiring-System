@@ -1,11 +1,14 @@
 package com.lexisnexis.hiring.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,13 +24,16 @@ public class ScheduleInterview {
     private Employee hiringManager;
     @OneToOne
     private Candidate candidate;
-    private Date interviewTime;
+    private LocalDateTime interviewTime;
     @OneToMany(mappedBy = "scheduleInterview",cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List <Employee> panels;
     @OneToOne
     private Employee manager;
     private String levelOfInterview;
-    private Date createdDate;
-    private Date updatedDate;
-    private boolean isDeleted;
+    @CreationTimestamp
+    private LocalDateTime createdDate;
+    @UpdateTimestamp
+    private LocalDateTime updatedDate;
+    private boolean isDeleted = false;
 }

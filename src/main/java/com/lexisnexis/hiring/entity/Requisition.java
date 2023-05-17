@@ -4,9 +4,11 @@ package com.lexisnexis.hiring.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -22,14 +24,18 @@ public class Requisition {
     private String projectName;
     private String partnerName;
     private String status;
-    private Date timeslot;
+    private LocalDateTime timeslot;
     private int noPanels;
     @OneToOne
     private Employee specificPanel;
     private String additionalCondition;
     @OneToOne
-    private  Employee manager;
-    private Date createdDate;
-    private  Date updatedDate;
-    private boolean isDeleted;
+    private Employee manager;
+
+    @CreationTimestamp
+    private LocalDateTime createdDate;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedDate;
+    private boolean isDeleted = false;
 }

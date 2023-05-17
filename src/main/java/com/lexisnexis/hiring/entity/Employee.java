@@ -1,12 +1,15 @@
 package com.lexisnexis.hiring.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -26,8 +29,12 @@ public class Employee {
     private Employee manager;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "schedule_interview_id")
+    @JsonBackReference
     private ScheduleInterview scheduleInterview;
-    private Date createdDate;
-    private Date updatedDate;
-    private boolean isDeleted;
+    @CreationTimestamp
+    private LocalDateTime createdDate;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedDate;
+    private boolean isDeleted = false;
 }
