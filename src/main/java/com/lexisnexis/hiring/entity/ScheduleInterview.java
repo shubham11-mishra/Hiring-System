@@ -16,18 +16,18 @@ import java.util.List;
 public class ScheduleInterview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int interview_id;
+    private int interviewId;
     @OneToOne
     private Employee hr;
     @OneToOne
     private Candidate candidate;
-    private Date interview_time;
+    private Date interviewTime;
     @OneToMany(mappedBy = "scheduleInterview",cascade = CascadeType.ALL)
     private List <Employee> panels;
     @OneToOne
     private Employee manager;
-    private String level_of_interview;
-    private Date created_date;
-    private Date updated_date;
-    private boolean is_deleted;
+    private String levelOfInterview;
+    private Date createdDate;
+    private Date updatedDate;
+    private boolean isDeleted;
 }

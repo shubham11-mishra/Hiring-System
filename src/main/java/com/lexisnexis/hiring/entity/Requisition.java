@@ -17,20 +17,20 @@ public class Requisition {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int job_id;
-    private String job_profile;
-    private String job_description;
-    private String project_name;
-    private String partner_name;
+    private int jobId;
+    private String jobProfile;
+    private String jobDescription;
+    private String projectName;
+    private String partnerName;
     private String status;
     private Date timeslot;
-    private int no_panels;
+    private int noPanels;
     @OneToOne
-    private Employee specific_panel;
-    private String additional_condition;
+    private Employee specificPanel;
+    private String additionalCondition;
     @OneToOne
     private  Employee manager;
-    private Date created_date;
-    private  Date updated_date;
-    private boolean is_deleted;
+    private Date createdDate;
+    private  Date updatedDate;
+    private boolean isDeleted;
 }

@@ -16,15 +16,15 @@ import java.util.List;
 public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int comment_id;
+    private int commentId;
     private String result;
     private String comments;
-    private String level_name;
+    private String levelName;
     @OneToOne
     private Candidate candidate;
     @OneToOne
     private Employee employee;
-    private Date created_date;
-    private Date updated_date;
-    private boolean is_deleted;
+    private Date createdDate;
+    private Date updatedDate;
+    private boolean isDeleted;
 }

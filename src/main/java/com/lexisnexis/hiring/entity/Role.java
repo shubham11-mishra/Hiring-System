@@ -15,12 +15,12 @@ import java.util.Date;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int role_id;
-    private String name;
+    private int roleId;
+    private String Designation;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     private Employee employee;
-    private Date created_date;
-    private Date updated_date;
-    private boolean is_deleted;
+    private Date createdDate;
+    private Date updatedDate;
+    private boolean isDeleted;
 }

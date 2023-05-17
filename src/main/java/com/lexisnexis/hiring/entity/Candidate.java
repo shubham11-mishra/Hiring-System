@@ -17,19 +17,19 @@ import java.util.List;
 public class Candidate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int candidate_id;
-    private String candidate_name;
-    private Blob candidate_resume;
-    private Date applied_date;
-    private Date selection_date;
-    private Date level1_date;
-    private Date level2_date;
+    private int candidateId;
+    private String candidateName;
+    private Blob candidateResume;
+    private Date appliedDate;
+    private Date selectionDate;
+    private Date level1Date;
+    private Date level2Date;
     @OneToOne
     private Employee hr;
     @OneToOne
     private Requisition job;
-    private Date created_date;
-    private Date updated_date;
-    private boolean is_deleted;
+    private Date createdDate;
+    private Date updatedDate;
+    private boolean isDeleted;
 
 }
