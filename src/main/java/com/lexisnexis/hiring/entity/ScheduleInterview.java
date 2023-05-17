@@ -18,7 +18,7 @@ public class ScheduleInterview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int interviewId;
     @OneToOne
-    private Employee hr;
+    private Employee hiringManager;
     @OneToOne
     private Candidate candidate;
     private Date interviewTime;

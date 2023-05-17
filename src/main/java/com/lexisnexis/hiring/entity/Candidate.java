@@ -24,9 +24,9 @@ public class Candidate {
     private Date level1Date;
     private Date level2Date;
     @OneToOne
-    private Employee hr;
+    private Employee hiringManager;
     @OneToOne
-    private Requisition job;
+    private Requisition requisitionName;
     private Date createdDate;
     private Date updatedDate;
     private boolean isDeleted;

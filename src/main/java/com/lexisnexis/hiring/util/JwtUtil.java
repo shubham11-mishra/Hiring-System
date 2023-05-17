@@ -60,7 +60,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
-                .setIssuer("RAGHU")
+                .setIssuer("Lexisnexis")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(30)))
                 .signWith(SignatureAlgorithm.HS512, secret)
