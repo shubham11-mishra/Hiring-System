@@ -19,7 +19,6 @@ public class ScheduleInterview {
     private int interview_id;
     @OneToOne
     private Employee hr;
-
     @OneToOne
     private Candidate candidate;
     private Date interview_time;
