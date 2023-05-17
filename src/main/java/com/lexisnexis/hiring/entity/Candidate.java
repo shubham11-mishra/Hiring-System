@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Blob;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data

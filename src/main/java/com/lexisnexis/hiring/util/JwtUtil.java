@@ -31,7 +31,7 @@ public class JwtUtil {
     }
 
     //5. Generate Token with Empty Claims
-    public String generateToken(String  username) {
+    public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
         return generateToken(claims, username);
     }
@@ -60,7 +60,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
-                .setIssuer("lexisnexis")
+                .setIssuer("RAGHU")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(30)))
                 .signWith(SignatureAlgorithm.HS512, secret)

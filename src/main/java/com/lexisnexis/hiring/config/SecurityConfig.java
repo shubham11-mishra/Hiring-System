@@ -1,5 +1,6 @@
 package com.lexisnexis.hiring.config;
 
+
 import com.lexisnexis.hiring.filter.SecurityFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 
 @EnableWebSecurity
 @Configuration
@@ -38,10 +38,6 @@ public class SecurityConfig {
         return authConfig.getAuthenticationManager();
     }
 
-    @Bean
-    public BCryptPasswordEncoder pwdEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -54,7 +50,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/user/save", "/user/login").permitAll()
+                .authorizeRequests().antMatchers("/employee/save", "/employee/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()

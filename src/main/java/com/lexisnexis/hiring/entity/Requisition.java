@@ -14,7 +14,6 @@ import java.util.Date;
 @AllArgsConstructor
 @Table(name = "requisition_table")
 public class Requisition {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int jobId;

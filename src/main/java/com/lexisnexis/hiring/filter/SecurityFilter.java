@@ -1,5 +1,6 @@
 package com.lexisnexis.hiring.filter;
 
+
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
@@ -17,7 +18,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
@@ -33,16 +33,14 @@ public class SecurityFilter extends OncePerRequestFilter {
             FilterChain filterChain)
             throws ServletException, IOException {
 
-        String token=request.getHeader("Authorization");
-        if(token!=null) {
-
-            String username=jwtUtil.getUsername(token);
-
-            if(username!=null && SecurityContextHolder.getContext().getAuthentication()==null) {
-                UserDetails user=userDetailsService.loadUserByUsername(username);
-                boolean isValid=jwtUtil.validateToken(token, user.getUsername());
-                if(isValid) {
-                    UsernamePasswordAuthenticationToken authToken=new UsernamePasswordAuthenticationToken(username, user.getPassword(), user.getAuthorities());
+        String token = request.getHeader("Authorization");
+        if (token != null) {
+            String username = jwtUtil.getUsername(token);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails user = userDetailsService.loadUserByUsername(username);
+                boolean isValid = jwtUtil.validateToken(token, user.getUsername());
+                if (isValid) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, user.getPassword(), user.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
@@ -50,5 +48,4 @@ public class SecurityFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
 }

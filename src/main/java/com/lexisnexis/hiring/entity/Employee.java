@@ -19,6 +19,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int employeeId;
     private String employeeName;
+    private String employeePassword;
     @OneToMany(mappedBy = "employee",cascade = CascadeType.ALL)
     private List<Role> roles;
     @OneToOne
