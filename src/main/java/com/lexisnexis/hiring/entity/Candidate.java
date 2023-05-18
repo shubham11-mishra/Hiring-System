@@ -36,8 +36,4 @@ public class Candidate {
     @UpdateTimestamp
     private LocalDateTime updatedDate;
 
-
-    private boolean isDeleted = false;
-
-
 }

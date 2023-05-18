@@ -37,5 +37,4 @@ public class Requisition {
 
     @UpdateTimestamp
     private LocalDateTime updatedDate;
-    private boolean isDeleted = false;
 }

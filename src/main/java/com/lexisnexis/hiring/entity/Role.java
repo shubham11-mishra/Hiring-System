@@ -28,5 +28,4 @@ public class Role {
     private LocalDateTime createdDate;
     @UpdateTimestamp
     private LocalDateTime updatedDate;
-    private boolean isDeleted = false;
 }
