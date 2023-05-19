@@ -2,6 +2,7 @@ package com.lexisnexis.hiring.advice;
 
 import com.lexisnexis.hiring.exception.EmployeeAlreadyExistException;
 import com.lexisnexis.hiring.exception.ErrorDescription;
+import com.lexisnexis.hiring.exception.InvalidEmployeeID;
 import com.lexisnexis.hiring.exception.NoEmployeeFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,21 +15,26 @@ import java.util.Date;
 
 @RestControllerAdvice
 public class RestExceptionHandler {
+	@ExceptionHandler(InvalidEmployeeID.class)
+    public ResponseEntity<ErrorDescription>  userNotLogin(InvalidEmployeeID invalidEmployeeId) {
+        ErrorDescription error = new ErrorDescription(400, invalidEmployeeId.getMessage(), new Date());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(value = NoEmployeeFoundException.class)
-    public ResponseEntity<ErrorDescription> handleNoJobAlertFountException() {
-        ErrorDescription error = new ErrorDescription(400, "No Employee Found", new Date());
+    public ResponseEntity<ErrorDescription> handleNoJobAlertFountException(NoEmployeeFoundException noEmployeeFoundException) {
+        ErrorDescription error = new ErrorDescription(400, noEmployeeFoundException.getMessage(), new Date());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(value = EmployeeAlreadyExistException.class)
-    public ResponseEntity<ErrorDescription> handleEmployeeAlreadyExistException() {
-        ErrorDescription error = new ErrorDescription(409, "Employee Already Found", new Date());
+    public ResponseEntity<ErrorDescription> handleEmployeeAlreadyExistException(EmployeeAlreadyExistException employeeAlreadyExistException) {
+        ErrorDescription error = new ErrorDescription(409, employeeAlreadyExistException.getMessage(), new Date());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler({AccessDeniedException.class, HttpClientErrorException.Unauthorized.class})
-    public ResponseEntity<ErrorDescription> handleUnauthorizedException() {
-        ErrorDescription error = new ErrorDescription(401, "UnAuthorized Employee Access", new Date());
+    public ResponseEntity<ErrorDescription> handleUnauthorizedException(AccessDeniedException accessDeniedException,HttpClientErrorException.Unauthorized unauthorized) {
+        ErrorDescription error = new ErrorDescription(401, accessDeniedException.getMessage() + " "+unauthorized.getMessage(), new Date());
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 

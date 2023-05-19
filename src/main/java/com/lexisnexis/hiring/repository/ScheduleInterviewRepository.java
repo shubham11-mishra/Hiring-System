@@ -9,8 +9,6 @@ import java.util.List;
 @Repository
 public interface ScheduleInterviewRepository extends JpaRepository<ScheduleInterview,Integer> {
     ScheduleInterview findByInterviewId(int interviewId);
-
     List<ScheduleInterview> findByLevelOfInterview(String levelOfInterview);
-
     List<ScheduleInterview> getAllByCandidate(Candidate candidate);
 }
