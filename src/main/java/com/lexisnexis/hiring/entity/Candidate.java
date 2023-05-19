@@ -1,8 +1,6 @@
 package com.lexisnexis.hiring.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -11,7 +9,8 @@ import java.sql.Blob;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "candidate_table")
@@ -25,14 +24,13 @@ public class Candidate {
     private LocalDateTime selectionDate;
     private LocalDateTime level1Date;
     private LocalDateTime level2Date;
+    private String Result;
     @OneToOne
     private Employee hiringManager;
     @OneToOne
     private Requisition requisitionName;
-
     @CreationTimestamp
     private LocalDateTime createdDate;
-
     @UpdateTimestamp
     private LocalDateTime updatedDate;
 

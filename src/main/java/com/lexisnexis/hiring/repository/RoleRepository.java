@@ -1,9 +1,11 @@
 package com.lexisnexis.hiring.repository;
 
-import com.lexisnexis.hiring.entity.Candidate;
+import com.lexisnexis.hiring.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CandidateRepository extends JpaRepository<Candidate , Integer> {
+public interface RoleRepository extends JpaRepository<Role,Integer> {
+    Role findByDesignation(String designation);
+
 }

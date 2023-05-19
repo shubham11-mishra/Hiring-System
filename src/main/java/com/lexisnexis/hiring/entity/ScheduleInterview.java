@@ -1,9 +1,7 @@
 package com.lexisnexis.hiring.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,7 +10,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "schedule_interview_table")
@@ -21,7 +20,7 @@ public class ScheduleInterview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int interviewId;
     @OneToOne
-    private Employee hiringManager;
+    private Employee HumanResources;
     @OneToOne
     private Candidate candidate;
     private LocalDateTime interviewTime;

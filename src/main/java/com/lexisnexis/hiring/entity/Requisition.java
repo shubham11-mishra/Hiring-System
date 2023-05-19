@@ -1,9 +1,7 @@
 package com.lexisnexis.hiring.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -11,7 +9,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "requisition_table")
@@ -31,10 +30,8 @@ public class Requisition {
     private String additionalCondition;
     @OneToOne
     private Employee manager;
-
     @CreationTimestamp
     private LocalDateTime createdDate;
-
     @UpdateTimestamp
     private LocalDateTime updatedDate;
 }
