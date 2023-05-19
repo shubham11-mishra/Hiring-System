@@ -4,15 +4,10 @@ import com.lexisnexis.hiring.entity.Candidate;
 import com.lexisnexis.hiring.entity.ScheduleInterview;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-<<<<<<< HEAD
-@Repository
-=======
 import java.util.List;
 
->>>>>>> 95319528ed1e3273ac360eeb6c5fb358746f3a96
+@Repository
 public interface ScheduleInterviewRepository extends JpaRepository<ScheduleInterview,Integer> {
-
     ScheduleInterview findByInterviewId(int interviewId);
 
     List<ScheduleInterview> findByLevelOfInterview(String levelOfInterview);
