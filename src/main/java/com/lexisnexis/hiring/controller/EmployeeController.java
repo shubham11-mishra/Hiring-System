@@ -1,10 +1,13 @@
 package com.lexisnexis.hiring.controller;
 
+import com.lexisnexis.hiring.entity.Candidate;
 import com.lexisnexis.hiring.entity.Employee;
 import com.lexisnexis.hiring.entity.JWTResponse;
+import com.lexisnexis.hiring.service.CandidateService;
 import com.lexisnexis.hiring.service.EmployeeService;
 import com.lexisnexis.hiring.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,4 +45,5 @@ public class EmployeeController {
     public ResponseEntity<String> accessUserData(Principal p) {
         return ResponseEntity.ok("Hello user:"+p.getName());
     }
+
 }

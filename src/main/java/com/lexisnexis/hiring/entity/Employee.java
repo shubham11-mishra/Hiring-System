@@ -25,7 +25,9 @@ public class Employee {
     private String employeePassword;
     @OneToMany(mappedBy = "employee",cascade = CascadeType.ALL)
     private List<Role> roles;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "candidate_id")
+    @JsonBackReference
     private Employee manager;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "schedule_interview_id")

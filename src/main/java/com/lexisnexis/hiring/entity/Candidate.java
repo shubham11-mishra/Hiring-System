@@ -1,14 +1,23 @@
 package com.lexisnexis.hiring.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.Date;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
-import java.sql.Blob;
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
@@ -20,20 +29,20 @@ public class Candidate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int candidateId;
     private String candidateName;
-    private Blob candidateResume;
-    private LocalDateTime appliedDate;
-    private LocalDateTime selectionDate;
-    private LocalDateTime level1Date;
-    private LocalDateTime level2Date;
-    @OneToOne
+    private String candidateResume;
+    private Date appliedDate;
+    private Date selectionDate;
+    private Date level1Date;
+    private Date level2Date;
+    @OneToOne(mappedBy = "manager",cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Employee hiringManager;
     @OneToOne
+    @JsonManagedReference
     private Requisition requisitionName;
-
     @CreationTimestamp
-    private LocalDateTime createdDate;
-
+    private Date createdDate;
     @UpdateTimestamp
-    private LocalDateTime updatedDate;
+    private Date updatedDate;
 
 }
