@@ -6,29 +6,37 @@ import com.lexisnexis.hiring.entity.ScheduleInterview;
 import com.lexisnexis.hiring.exception.InterviewAlreadyScheduleException;
 import com.lexisnexis.hiring.exception.InterviewNotFoundException;
 import com.lexisnexis.hiring.repository.CandidateRepository;
+import com.lexisnexis.hiring.repository.EmployeeRepository;
 import com.lexisnexis.hiring.repository.ScheduleInterviewRepository;
 import com.lexisnexis.hiring.service.ScheduleInterviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ScheduleInterviewImpl implements ScheduleInterviewService {
-
     @Autowired
     ScheduleInterviewRepository scheduleInterviewRepository;
-
     @Autowired
     CandidateRepository candidateRepository;
-
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @Override
     public ScheduleInterview addInterview(ScheduleInterview scheduleInterview) throws InterviewAlreadyScheduleException {
-        if(scheduleInterviewRepository.findById(scheduleInterview.getInterviewId()).isPresent()){
+        if (scheduleInterviewRepository.findById(scheduleInterview.getInterviewId()).isPresent()) {
             throw new InterviewAlreadyScheduleException("Interview already schedule");
-        }else{
+        } else {
+            Set<Employee> employeeList = new HashSet<>();
+            for (Employee employee:scheduleInterview.getPanels())
+            {
+                Employee employee1= employeeRepository.findById(employee.getEmployeeId()).get();
+                employeeList.add(employee1);
+            }
+            scheduleInterview.setPanels(employeeList);
             ScheduleInterview interview = scheduleInterviewRepository.save(scheduleInterview);
             return interview;
         }
@@ -36,18 +44,18 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
 
     @Override
     public String deleteInterview(int interviewId) throws InterviewNotFoundException {
-        if(scheduleInterviewRepository.findByInterviewId(interviewId).isDeleted()) {
+        if (scheduleInterviewRepository.findByInterviewId(interviewId) == null) {
             throw new InterviewNotFoundException("Interview not found for interviewId: " + interviewId);
         }
-            scheduleInterviewRepository.deleteById(interviewId);
-            return ("Interview Deleted for interviewId: " + interviewId);
+        scheduleInterviewRepository.deleteById(interviewId);
+        return ("Interview Deleted for interviewId: " + interviewId);
     }
 
     @Override
     public ScheduleInterview updateInterview(ScheduleInterview scheduleInterview) throws InterviewNotFoundException {
-        if(scheduleInterviewRepository.findById(scheduleInterview.getInterviewId()).isEmpty()){
+        if (scheduleInterviewRepository.findById(scheduleInterview.getInterviewId()).isEmpty()) {
             throw new InterviewNotFoundException("Interview not found");
-        }else{
+        } else {
             ScheduleInterview interview = scheduleInterviewRepository.findById(scheduleInterview.getInterviewId()).get();
             interview.setInterviewId(scheduleInterview.getInterviewId());
             interview.setInterviewTime(scheduleInterview.getInterviewTime());
@@ -55,7 +63,13 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
             interview.setCandidate(scheduleInterview.getCandidate());
             interview.setHumanResource(scheduleInterview.getHumanResource());
             interview.setManager(scheduleInterview.getManager());
-            interview.setPanels(scheduleInterview.getPanels());
+            Set<Employee> employeeList = new HashSet<>();
+            for (Employee employee:scheduleInterview.getPanels())
+            {
+                Employee employee1= employeeRepository.findById(employee.getEmployeeId()).get();
+                employeeList.add(employee1);
+            }
+            interview.setPanels(employeeList);
             ScheduleInterview updatedInterview = scheduleInterviewRepository.save(interview);
             return updatedInterview;
         }
@@ -69,7 +83,7 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
 
     @Override
     public ScheduleInterview getInterviewByInterviewId(int interviewId) throws InterviewNotFoundException {
-        if(scheduleInterviewRepository.findByInterviewId(interviewId).isDeleted()){
+        if (scheduleInterviewRepository.findByInterviewId(interviewId) == null) {
             throw new InterviewNotFoundException("Interview Not Found For Id: " + interviewId);
         }
         ScheduleInterview interview = scheduleInterviewRepository.findByInterviewId(interviewId);
@@ -85,12 +99,9 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
     @Override
     public List<ScheduleInterview> getAllInterviewsByCandidateId(int candidateId) throws InterviewNotFoundException {
         Candidate candidate = candidateRepository.findById(candidateId).get();
-        if(candidate == null)
-        {
+        if (candidate == null) {
             throw new InterviewNotFoundException("Interview Not Found For Id: " + candidateId);
-        }
-        else {
-
+        } else {
             if (scheduleInterviewRepository.getAllByCandidate(candidate).isEmpty()) {
                 throw new InterviewNotFoundException("No Interview Found");
             } else {
@@ -99,5 +110,4 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
             }
         }
     }
-
 }

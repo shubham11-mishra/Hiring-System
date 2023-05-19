@@ -21,9 +21,6 @@ public class ScheduleInterviewController {
     @PostMapping("/addInterview")
     public ResponseEntity<ScheduleInterview> addInterview(@RequestBody ScheduleInterview scheduleInterview) throws InterviewAlreadyScheduleException {
         ScheduleInterview interview = scheduleInterviewImpl.addInterview(scheduleInterview);
-//        interview.setManager(scheduleInterview.getManager());
-//        interview.setCandidate(scheduleInterview.getCandidate());
-//        interview.setPanels(scheduleInterview.getPanels());
         return ResponseEntity.ok(interview);
     }
 

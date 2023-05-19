@@ -38,10 +38,10 @@ public class Employee {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "manager_id")
     private Employee manager;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "schedule_interview_id")
-    @JsonBackReference
-    private ScheduleInterview scheduleInterview;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "schedule_interview_id")
+//    @JsonBackReference
+//    private ScheduleInterview scheduleInterview;
     @CreationTimestamp
     private LocalDateTime createdDate;
     @UpdateTimestamp

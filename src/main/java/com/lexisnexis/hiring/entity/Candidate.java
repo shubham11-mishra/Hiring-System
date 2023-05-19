@@ -33,5 +33,4 @@ public class Candidate {
     private LocalDateTime createdDate;
     @UpdateTimestamp
     private LocalDateTime updatedDate;
-
 }

@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RequisitionRepository extends JpaRepository<Requisition ,Integer> {
-
-	public Requisition findByjobId(int jobId);
-	
 	public List<Requisition> findByManager(Employee byid);
+	Requisition findByJobId(int jobId);
 }

@@ -27,7 +27,7 @@ public class Requisition {
     private String projectName;
     private String partnerName;
     private String status;
-    private LocalDateTime timeslot;
+    private String timeslot;
     private int noPanels;
     @OneToOne
     private Employee specificPanel;

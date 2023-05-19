@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -27,9 +28,19 @@ public class ScheduleInterview {
     @OneToOne
     private Candidate candidate;
     private LocalDateTime interviewTime;
-    @OneToMany(mappedBy = "scheduleInterview",cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List <Employee> panels;
+//    @OneToMany(mappedBy = "scheduleInterview",cascade = CascadeType.ALL)
+//    @JsonManagedReference
+//    private List <Employee> panels;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "interview_table",
+            joinColumns = {
+                    @JoinColumn(name = "interview_id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "employee_id")
+            }
+    )
+    private Set<Employee> panels;
     @OneToOne
     private Employee manager;
     private String levelOfInterview;
@@ -37,5 +48,4 @@ public class ScheduleInterview {
     private LocalDateTime createdDate;
     @UpdateTimestamp
     private LocalDateTime updatedDate;
-    private boolean isDeleted;
 }

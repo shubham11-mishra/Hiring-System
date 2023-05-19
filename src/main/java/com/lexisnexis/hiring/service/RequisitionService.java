@@ -6,7 +6,6 @@ import com.lexisnexis.hiring.entity.Requisition;
 import com.lexisnexis.hiring.exception.InvalidEmployeeID;
 
 public interface RequisitionService {
-
 	Requisition addRequisition(Requisition requisition, int managerID) throws InvalidEmployeeID;
 
 	Requisition updateRequisition(Requisition requisition,int jobId) throws InvalidEmployeeID;
