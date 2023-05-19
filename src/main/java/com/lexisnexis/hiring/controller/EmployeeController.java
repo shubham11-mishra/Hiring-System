@@ -26,7 +26,7 @@ public class EmployeeController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/login")
-    public ResponseEntity<JWTResponse> loginUser(@RequestBody Employee employeeRequest)
+    public ResponseEntity<JWTResponse> loginEmployee(@RequestBody Employee employeeRequest)
     {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -38,8 +38,8 @@ public class EmployeeController {
         return ResponseEntity.ok(new JWTResponse(token,"JWT Token Generated"));
     }
     @GetMapping("/welcome")
-    public ResponseEntity<String> accessUserData(Principal p) {
-        return ResponseEntity.ok("Hello user:"+p.getName());
+    public ResponseEntity<String> accessEmployeeData(Principal p) {
+        return ResponseEntity.ok("Hello Employee:"+p.getName());
     }
     @PostMapping("/save")
     public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee)  {
