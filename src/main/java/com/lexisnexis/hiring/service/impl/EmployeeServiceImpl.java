@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements EmployeeService, UserDetailsService {
     @Autowired
     EmployeeRepository employeeRepository;
-
     @Autowired
     RoleRepository roleRepository;
     @Autowired
