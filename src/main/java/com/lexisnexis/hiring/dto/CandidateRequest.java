@@ -1,6 +1,6 @@
 package com.lexisnexis.hiring.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,16 +17,16 @@ public class CandidateRequest {
 	
 	private MultipartFile candidateResume;
 	
-	@DateTimeFormat(pattern = "yyyy-mm-dd")
-	private Date appliedDate;
-	@DateTimeFormat(pattern = "yyyy-mm-dd")
-	private Date selectionDate;
-	@DateTimeFormat(pattern = "yyyy-mm-dd")
-	private Date level1Date;
-	@DateTimeFormat(pattern = "yyyy-mm-dd")
-	private Date level2Date;
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	private LocalDateTime appliedDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	private LocalDateTime selectionDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	private LocalDateTime level1Date;
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	private LocalDateTime level2Date;
 	private Employee hiringManager;
 	private Requisition requisitionName;
-	private Date createdDate;
-	private Date updatedDate;
+	private LocalDateTime createdDate;
+	private LocalDateTime updatedDate;
 }

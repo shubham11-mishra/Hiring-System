@@ -1,6 +1,6 @@
 package com.lexisnexis.hiring.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -30,10 +30,10 @@ public class Candidate {
     private int candidateId;
     private String candidateName;
     private String candidateResume;
-    private Date appliedDate;
-    private Date selectionDate;
-    private Date level1Date;
-    private Date level2Date;
+    private LocalDateTime appliedDate;
+    private LocalDateTime selectionDate;
+    private LocalDateTime level1Date;
+    private LocalDateTime level2Date;
     @OneToOne(mappedBy = "manager",cascade = CascadeType.ALL)
     @JsonManagedReference
     private Employee hiringManager;
@@ -41,8 +41,8 @@ public class Candidate {
     @JsonManagedReference
     private Requisition requisitionName;
     @CreationTimestamp
-    private Date createdDate;
+    private LocalDateTime createdDate;
     @UpdateTimestamp
-    private Date updatedDate;
+    private LocalDateTime updatedDate;
 
 }

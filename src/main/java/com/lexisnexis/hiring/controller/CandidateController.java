@@ -43,8 +43,7 @@ public class CandidateController {
     
     @GetMapping(value = "/getAllcandidate")
     public ResponseEntity<List<Candidate>> getAllCandidate() {
-    	System.out.println("111111111111111111111111");
-        return new ResponseEntity<List<Candidate>>(candidateService.getAllCandidate(), HttpStatus.OK);
+    	return new ResponseEntity<List<Candidate>>(candidateService.getAllCandidate(), HttpStatus.OK);
     }
     @DeleteMapping(value = "/deletecandidate/{candidateId}")
     public ResponseEntity<String> deleteCandidateById(@PathVariable Integer candidateId){
