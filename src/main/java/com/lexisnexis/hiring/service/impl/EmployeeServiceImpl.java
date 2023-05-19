@@ -80,10 +80,17 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
             existingEmployee.setEmployeeId(employee.getEmployeeId());
             existingEmployee.setEmployeeName(employee.getEmployeeName());
             existingEmployee.setEmployeePassword(employee.getEmployeePassword());
-            for (Role role : existingEmployee.getRoles()) {
-                roleRepository.deleteById(role.getRoleId());
+//            for (Role role : existingEmployee.getRoles()) {
+//                roleRepository.deleteById(role.getRoleId());
+//            }
+//            existingEmployee.setRoles(employee.getRoles());
+            Set<Role> employeeRoles = new HashSet<>();
+            for (Role role:employee.getRoles())
+            {
+                Role role1 = roleRepository.findByDesignation(role.getDesignation());
+                employeeRoles.add(role1);
             }
-            existingEmployee.setRoles(employee.getRoles());
+            existingEmployee.setRoles(employeeRoles);
             existingEmployee.setManager(employee.getManager());
             Employee updatedEmployee = employeeRepository.save(existingEmployee);
             return updatedEmployee;

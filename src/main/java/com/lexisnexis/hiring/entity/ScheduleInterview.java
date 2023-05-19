@@ -20,7 +20,7 @@ public class ScheduleInterview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int interviewId;
     @OneToOne
-    private Employee HumanResources;
+    private Employee humanResource;
     @OneToOne
     private Candidate candidate;
     private LocalDateTime interviewTime;
