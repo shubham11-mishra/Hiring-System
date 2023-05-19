@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lexisnexis.hiring.entity.Requisition;
@@ -18,6 +19,7 @@ import com.lexisnexis.hiring.exception.InvalidEmployeeID;
 import com.lexisnexis.hiring.service.RequisitionService;
 
 @RestController
+@RequestMapping("/requistion")
 public class RequisitionController {
 
 	@Autowired
