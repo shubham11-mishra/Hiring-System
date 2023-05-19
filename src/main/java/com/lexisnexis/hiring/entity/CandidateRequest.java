@@ -1,15 +1,10 @@
 package com.lexisnexis.hiring.entity;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.lexisnexis.hiring.entity.Employee;
-import com.lexisnexis.hiring.entity.Requisition;
-
-import lombok.Data;
+import java.time.LocalDateTime;
 
 @Data
 public class CandidateRequest {
@@ -18,15 +13,14 @@ public class CandidateRequest {
 
 	private MultipartFile candidateResume;
 
-	@DateTimeFormat(pattern = "yyyy-mm-dd")
-	private Date appliedDate;
-	@DateTimeFormat(pattern = "yyyy-mm-dd")
-	private Date selectionDate;
-	@DateTimeFormat(pattern = "yyyy-mm-dd")
-	private Date level1Date;
-	@DateTimeFormat(pattern = "yyyy-mm-dd")
-	private Date level2Date;
-
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	private LocalDateTime appliedDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	private LocalDateTime selectionDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	private LocalDateTime level1Date;
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	private LocalDateTime level2Date;
 	private Employee hiringManager;
 	private Requisition requisitionName;
 	private LocalDateTime createdDate;

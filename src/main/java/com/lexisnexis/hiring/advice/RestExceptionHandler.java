@@ -48,5 +48,11 @@ public class RestExceptionHandler {
 		ErrorDescription errorDescription = new ErrorDescription(404, "Candidate are not found", new Date());
 		return new ResponseEntity<ErrorDescription>(errorDescription, HttpStatus.BAD_REQUEST);
 	}
-
+//NullPointerException
+	@ExceptionHandler(value = NullPointerException.class)
+	public ResponseEntity<ErrorDescription> candidateDoesntNullPointer(
+			CandidateAlreadyExistException candidateAlreadyExistException) {
+		ErrorDescription errorDescription = new ErrorDescription(404, "Candidate are not found", new Date());
+		return new ResponseEntity<ErrorDescription>(errorDescription, HttpStatus.BAD_REQUEST);
+	}
 }

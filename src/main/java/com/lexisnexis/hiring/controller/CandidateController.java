@@ -44,7 +44,7 @@ public class CandidateController {
     @GetMapping(value = "/getAllcandidate")
     public ResponseEntity<List<Candidate>> getAllCandidate() {
         return new ResponseEntity<List<Candidate>>(candidateService.getAllCandidate(), HttpStatus.OK);
-    }
+ }
     @DeleteMapping(value = "/deletecandidate/{candidateId}")
     public ResponseEntity<String> deleteCandidateById(@PathVariable Integer candidateId){
     	candidateService.deleteByCandidateId(candidateId);

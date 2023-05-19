@@ -11,6 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+
 @Entity
 @Getter
 @Setter
@@ -27,8 +28,10 @@ public class Candidate {
     private LocalDateTime selectionDate;
     private LocalDateTime level1Date;
     private LocalDateTime level2Date;
+
     private String Result;
-    @OneToOne
+    @OneToOne(mappedBy = "manager",cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Employee hiringManager;
     @OneToOne
     @JsonManagedReference

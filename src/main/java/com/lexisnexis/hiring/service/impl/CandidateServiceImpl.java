@@ -71,7 +71,7 @@ public class CandidateServiceImpl implements CandidateService {
 
 		if (candidateRequest.getCreatedDate() != null) {
 			updateCandidate.setCreatedDate(candidateRequest.getCreatedDate());
-		}
+		} 
 		if (candidateRequest.getHiringManager() != null) {
 			updateCandidate.setHiringManager(candidateRequest.getHiringManager());
 		}
@@ -102,7 +102,7 @@ public class CandidateServiceImpl implements CandidateService {
 
 	@Override
 	public Candidate getByCandidateId(int candidateId) {
-		if (candidateRepository.findByCandidateId(candidateId) == null) {
+		if (candidateRepository.findByCandidateId(candidateId)==null) {
 			throw new CandidateDoesNotExistException();
 		}
 		Candidate findByCandidateId = candidateRepository.findByCandidateId(candidateId);
@@ -117,11 +117,11 @@ public class CandidateServiceImpl implements CandidateService {
 
 	@Override
 	public void deleteByCandidateId(int candidateId) {
-		if (candidateRepository.findByCandidateId(candidateId) == null) {
+		
+		if (candidateRepository.findByCandidateId(candidateId)==null) {
 			throw new CandidateDoesNotExistException();
-		} else {
-			candidateRepository.deleteById(candidateId);
 		}
+		candidateRepository.deleteById(candidateId);	
 	}
 
 }
