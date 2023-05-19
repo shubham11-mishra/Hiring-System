@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 @Entity
@@ -28,6 +31,7 @@ public class Requisition {
     private Employee specificPanel;
     private String additionalCondition;
     @OneToOne
+    @JsonIgnore
     private  Employee manager;
     private Date createdDate;
     private  Date updatedDate;
