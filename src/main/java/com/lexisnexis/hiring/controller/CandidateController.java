@@ -29,7 +29,6 @@ public class CandidateController {
    
     @PostMapping(value = "/savecandidate",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Candidate> saveCandidate(@ModelAttribute CandidateRequest candidateRequest) throws CandidateAlreadyExistException, IOException{
-        System.out.println(candidateRequest);
         return new ResponseEntity<Candidate>(candidateService.saveCandidate(candidateRequest), HttpStatus.OK);
     }
     
@@ -44,7 +43,6 @@ public class CandidateController {
     
     @GetMapping(value = "/getAllcandidate")
     public ResponseEntity<List<Candidate>> getAllCandidate() {
-    	System.out.println("111111111111111111111111");
         return new ResponseEntity<List<Candidate>>(candidateService.getAllCandidate(), HttpStatus.OK);
     }
     @DeleteMapping(value = "/deletecandidate/{candidateId}")

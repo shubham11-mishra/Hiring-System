@@ -15,11 +15,18 @@ import lombok.Data;
 public class CandidateRequest {
 	private int candidateId;
 	private String candidateName;
+
 	private MultipartFile candidateResume;
-	private LocalDateTime appliedDate;
-	private LocalDateTime selectionDate;
-	private LocalDateTime level1Date;
-	private LocalDateTime level2Date;
+
+	@DateTimeFormat(pattern = "yyyy-mm-dd")
+	private Date appliedDate;
+	@DateTimeFormat(pattern = "yyyy-mm-dd")
+	private Date selectionDate;
+	@DateTimeFormat(pattern = "yyyy-mm-dd")
+	private Date level1Date;
+	@DateTimeFormat(pattern = "yyyy-mm-dd")
+	private Date level2Date;
+
 	private Employee hiringManager;
 	private Requisition requisitionName;
 	private LocalDateTime createdDate;

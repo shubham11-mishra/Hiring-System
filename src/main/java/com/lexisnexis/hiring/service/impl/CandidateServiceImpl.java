@@ -45,6 +45,7 @@ public class CandidateServiceImpl implements CandidateService {
 		newCandidate.setUpdatedDate(candidateRequest.getUpdatedDate());
 		String originalFilename = FOLDER_PATH + candidateRequest.getCandidateResume().getOriginalFilename();
 		newCandidate.setCandidateResume(originalFilename);
+
 		candidateRepository.save(newCandidate);
 		Files.copy(candidateRequest.getCandidateResume().getInputStream(), Paths.get(originalFilename),
 				StandardCopyOption.REPLACE_EXISTING);
@@ -123,15 +124,4 @@ public class CandidateServiceImpl implements CandidateService {
 		}
 	}
 
-	/*
-	 * @Override public Candidate candidateSave(MultipartFile file,Candidate
-	 * candidate) { Candidate newcandidate = new Candidate();
-	 * 
-	 * String cleanPath = StringUtils.cleanPath(file.getOriginalFilename());
-	 * if(cleanPath.contains("..")) { System.out.println("not valid file"); } try {
-	 * newcandidate.setCandidateResume(Base64.getEncoder().encodeToString(file.
-	 * getBytes()));
-	 * 
-	 * } catch (IOException e) { e.printStackTrace(); } return null; }
-	 */
 }
