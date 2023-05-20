@@ -57,21 +57,35 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
             throw new InterviewNotFoundException("Interview not found");
         } else {
             ScheduleInterview interview = scheduleInterviewRepository.findById(scheduleInterview.getInterviewId()).get();
-            interview.setInterviewId(scheduleInterview.getInterviewId());
-            interview.setInterviewTime(scheduleInterview.getInterviewTime());
-            interview.setLevelOfInterview(scheduleInterview.getLevelOfInterview());
-            interview.setCandidate(scheduleInterview.getCandidate());
-            interview.setHumanResource(scheduleInterview.getHumanResource());
-            interview.setManager(scheduleInterview.getManager());
+            if(interview!=null){
+                if(scheduleInterview.getInterviewTime()!=null){
+                    interview.setInterviewTime(scheduleInterview.getInterviewTime());
+                }
+                if(scheduleInterview.getLevelOfInterview()!=null){
+                    interview.setLevelOfInterview(scheduleInterview.getLevelOfInterview());
+                }
+                if(scheduleInterview.getCandidate()!=null){
+                    interview.setCandidate(scheduleInterview.getCandidate());
+                }
+                if(scheduleInterview.getHumanResource()!=null){
+                    interview.setHumanResource(scheduleInterview.getHumanResource());
+                }
+                if(scheduleInterview.getManager()!=null){
+                    interview.setManager(scheduleInterview.getManager());
+                }
+            }
             Set<Employee> employeeList = new HashSet<>();
             for (Employee employee:scheduleInterview.getPanels())
             {
                 Employee employee1= employeeRepository.findById(employee.getEmployeeId()).get();
                 employeeList.add(employee1);
+
             }
-            interview.setPanels(employeeList);
-            ScheduleInterview updatedInterview = scheduleInterviewRepository.save(interview);
-            return updatedInterview;
+            if(scheduleInterview.getPanels()!=null){
+                interview.setPanels(employeeList);
+            }
+           scheduleInterviewRepository.save(interview);
+            return interview;
         }
     }
 
