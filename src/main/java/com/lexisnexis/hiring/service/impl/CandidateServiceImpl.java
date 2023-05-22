@@ -21,7 +21,7 @@ public class CandidateServiceImpl implements CandidateService {
 	@Autowired
 	private CandidateRepository candidateRepository;
 
-	private final String FOLDER_PATH = "C:/lexisnexis/hiring-application/hiring_application/src/main/resources/myfile/";
+	private final String FOLDER_PATH = "C:/FurnitureApplication/HIRING_APPLICATION/hiring/src/main/resources/myfile/";
 
 	@SuppressWarnings("resource")
 	@Override
