@@ -41,8 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
         } else {
             employee.setEmployeePassword(passwordEncoder.encode(employee.getEmployeePassword()));
             Set<Role> employeeRoles = new HashSet<>();
-            for (Role role:employee.getRoles())
-            {
+            for (Role role : employee.getRoles()) {
                 Role role1 = roleRepository.findByDesignation(role.getDesignation());
                 employeeRoles.add(role1);
             }
@@ -76,21 +75,31 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
             throw new NoEmployeeFoundException("No Employee Found");
         } else {
             Employee existingEmployee = employeeRepository.findById(employee.getEmployeeId()).get();
-            existingEmployee.setEmployeeId(employee.getEmployeeId());
-            existingEmployee.setEmployeeName(employee.getEmployeeName());
-            existingEmployee.setEmployeePassword(employee.getEmployeePassword());
-//            for (Role role : existingEmployee.getRoles()) {
-//                roleRepository.deleteById(role.getRoleId());
-//            }
-//            existingEmployee.setRoles(employee.getRoles());
-            Set<Role> employeeRoles = new HashSet<>();
-            for (Role role:employee.getRoles())
+            if(employee.getEmployeeId() != 0)
             {
-                Role role1 = roleRepository.findByDesignation(role.getDesignation());
-                employeeRoles.add(role1);
+                existingEmployee.setEmployeeId(employee.getEmployeeId());
             }
-            existingEmployee.setRoles(employeeRoles);
-            existingEmployee.setManager(employee.getManager());
+            if(employee.getEmployeeName() !=null)
+            {
+                existingEmployee.setEmployeeName(employee.getEmployeeName());
+            }
+            if(employee.getEmployeePassword()!= null)
+            {
+                existingEmployee.setEmployeePassword(employee.getEmployeePassword());
+            }
+            if(! employee.getRoles().isEmpty())
+            {
+                Set<Role> employeeRoles = new HashSet<>();
+                for (Role role : employee.getRoles()) {
+                    Role role1 = roleRepository.findByDesignation(role.getDesignation());
+                    employeeRoles.add(role1);
+                }
+                existingEmployee.setRoles(employeeRoles);
+            }
+            if(employee.getManager()!=null)
+            {
+                existingEmployee.setManager(employee.getManager());
+            }
             Employee updatedEmployee = employeeRepository.save(existingEmployee);
             return updatedEmployee;
         }
@@ -107,10 +116,9 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
 
     @Override
     public List<Employee> getAllEmployeesByManagerId(int managerId) {
-        Employee manager= employeeRepository.findById(managerId).get();
+        Employee manager = employeeRepository.findById(managerId).get();
         System.out.println(manager);
-        if(manager==null)
-        {
+        if (manager == null) {
             throw new NoEmployeeFoundException("No Employee Found");
         }
         if (employeeRepository.findAllByManager(manager).isEmpty()) {
@@ -123,9 +131,8 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
 
     @Override
     public List<Employee> getAllEmployeesByDesignation(String designation) {
-        Role role= roleRepository.findByDesignation(designation);
-        if(role==null)
-        {
+        Role role = roleRepository.findByDesignation(designation);
+        if (role == null) {
             throw new NoEmployeeFoundException("No Employee Found");
         }
         if (employeeRepository.findAllByRoles(role).isEmpty()) {
