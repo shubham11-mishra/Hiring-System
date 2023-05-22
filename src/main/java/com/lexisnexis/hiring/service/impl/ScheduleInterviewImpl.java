@@ -79,7 +79,6 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
             for (Employee employee : scheduleInterview.getPanels()) {
                 Employee employee1 = employeeRepository.findById(employee.getEmployeeId()).get();
                 employeeList.add(employee1);
-
             }
             if (scheduleInterview.getPanels() != null) {
                 interview.setPanels(employeeList);
