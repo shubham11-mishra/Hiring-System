@@ -16,6 +16,10 @@ import com.lexisnexis.hiring.exception.CandidateDoesNotExistException;
 import com.lexisnexis.hiring.repository.CandidateRepository;
 import com.lexisnexis.hiring.service.CandidateService;
 
+/**
+ * @author PalPre01
+ *
+ */
 @Service
 public class CandidateServiceImpl implements CandidateService {
 	@Autowired
@@ -112,7 +116,14 @@ public class CandidateServiceImpl implements CandidateService {
 	@Override
 	public List<Candidate> getAllCandidate() {
 		List<Candidate> findAll = candidateRepository.findAll();
-		return findAll;
+		int size=findAll.size();
+		if(size>0){
+			return findAll;
+		}
+		else{
+			throw new CandidateDoesNotExistException();
+		}
+
 	}
 
 	@Override
@@ -121,7 +132,10 @@ public class CandidateServiceImpl implements CandidateService {
 		if (candidateRepository.findByCandidateId(candidateId)==null) {
 			throw new CandidateDoesNotExistException();
 		}
-		candidateRepository.deleteById(candidateId);	
+		else {
+			candidateRepository.deleteById(candidateId);
+		}
+
 	}
 
 }
