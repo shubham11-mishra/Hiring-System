@@ -9,7 +9,6 @@ import com.lexisnexis.hiring.service.RequisitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -28,8 +27,6 @@ public class RequisitionServiceImpl implements RequisitionService {
 			Employee findByemployeeId2 = employeeRepository.findById(requisition.getSpecificPanel().getEmployeeId()).get();
 			requisition.setManager(findByemployeeId);
 			requisition.setSpecificPanel(findByemployeeId2);
-			requisition.setCreatedDate(LocalDateTime.now());
-			requisition.setUpdatedDate(LocalDateTime.now());
 			return requisitionRepository.save(requisition);
 		}
 		else {
@@ -69,7 +66,6 @@ public class RequisitionServiceImpl implements RequisitionService {
 			if(requisition.getSpecificPanel()!=null) {
 				existingRequisition.setSpecificPanel(requisition.getSpecificPanel());
 			}
-			existingRequisition.setUpdatedDate(LocalDateTime.now());
 			return requisitionRepository.save(existingRequisition);
 		}else {
 			throw new InvalidEmployeeID("JOB-ID is not valid");

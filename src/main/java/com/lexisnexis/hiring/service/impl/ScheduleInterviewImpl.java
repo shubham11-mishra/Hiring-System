@@ -74,6 +74,7 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
                     interview.setManager(scheduleInterview.getManager());
                 }
             }
+
             Set<Employee> employeeList = new HashSet<>();
             for (Employee employee : scheduleInterview.getPanels()) {
                 Employee employee1 = employeeRepository.findById(employee.getEmployeeId()).get();
