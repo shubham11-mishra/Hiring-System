@@ -34,7 +34,6 @@ public class Employee {
             }
     )
     private Set<Role> roles;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "manager_id")
     private Employee manager;

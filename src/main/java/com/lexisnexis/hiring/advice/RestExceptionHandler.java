@@ -1,9 +1,6 @@
 package com.lexisnexis.hiring.advice;
 
-import com.lexisnexis.hiring.exception.EmployeeAlreadyExistException;
-import com.lexisnexis.hiring.exception.ErrorDescription;
-import com.lexisnexis.hiring.exception.InvalidEmployeeID;
-import com.lexisnexis.hiring.exception.NoEmployeeFoundException;
+import com.lexisnexis.hiring.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,4 +35,24 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
 
+	@ExceptionHandler(value = CandidateAlreadyExistException.class)
+	public ResponseEntity<ErrorDescription> candidateAlreadyExist(
+			CandidateAlreadyExistException candidateAlreadyExistException) {
+		ErrorDescription errorDescription = new ErrorDescription(404, "Candidate are already exist", new Date());
+		return new ResponseEntity<ErrorDescription>(errorDescription, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(value = CandidateDoesNotExistException.class)
+	public ResponseEntity<ErrorDescription> candidateDoesntExist(
+			CandidateAlreadyExistException candidateAlreadyExistException) {
+		ErrorDescription errorDescription = new ErrorDescription(404, "Candidate are not found", new Date());
+		return new ResponseEntity<ErrorDescription>(errorDescription, HttpStatus.BAD_REQUEST);
+	}
+//NullPointerException
+	@ExceptionHandler(value = NullPointerException.class)
+	public ResponseEntity<ErrorDescription> candidateDoesntNullPointer(
+			CandidateAlreadyExistException candidateAlreadyExistException) {
+		ErrorDescription errorDescription = new ErrorDescription(404, "Candidate are not found", new Date());
+		return new ResponseEntity<ErrorDescription>(errorDescription, HttpStatus.BAD_REQUEST);
+	}
 }

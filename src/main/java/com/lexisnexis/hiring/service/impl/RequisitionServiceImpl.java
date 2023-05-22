@@ -107,6 +107,5 @@ public class RequisitionServiceImpl implements RequisitionService {
 		else {
 			throw new InvalidEmployeeID("ManagerID is not valid"); 
 		}
-
 	}
 }
