@@ -1,7 +1,8 @@
 package com.lexisnexis.hiring.service.impl;
 
+
 import com.lexisnexis.hiring.entity.Comments;
-import com.lexisnexis.hiring.exception.CandidateDoesNotExistException;
+import com.lexisnexis.hiring.exception.CandidateIdIncorrect;
 import com.lexisnexis.hiring.exception.CommentIdNotFoundException;
 import com.lexisnexis.hiring.exception.NoCommentsFoundException;
 import com.lexisnexis.hiring.exception.NoEmployeeFoundException;
@@ -11,11 +12,10 @@ import com.lexisnexis.hiring.repository.EmployeeRepository;
 import com.lexisnexis.hiring.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
+import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
-
     @Autowired
     private CommentsRepository commentsRepository;
 
@@ -30,12 +30,11 @@ public class CommentServiceImpl implements CommentService {
         if (employeeRepository.findById(comment.getEmployee().getEmployeeId()).isEmpty()) {
             throw new NoEmployeeFoundException("Employee id Incorrect");
         } else if (candidateRepository.findById(comment.getCandidate().getCandidateId()).isEmpty()) {
-            throw new CandidateDoesNotExistException();
+            throw new CandidateIdIncorrect("candidate id Incorrect");
         } else {
             return commentsRepository.save(comment);
         }
     }
-
 
     @Override
     public List<Comments> getComments() throws NoCommentsFoundException {
@@ -46,6 +45,8 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+
+
     @Override
     public Comments getCommentsByCommentId(int commentId) throws CommentIdNotFoundException {
         if (commentsRepository.findById(commentId) == null) {
@@ -54,7 +55,6 @@ public class CommentServiceImpl implements CommentService {
             return commentsRepository.findById(commentId).get();
         }
     }
-
 
     @Override
     public List<Comments> getCommentsByEmployeeId(int employeeId) throws NoCommentsFoundException {
@@ -65,6 +65,8 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+
+
     @Override
     public List<Comments> getCommentsByCandidateId(int candidateId) throws NoCommentsFoundException {
         if (commentsRepository.findByCandidId(candidateId) == null) {
@@ -72,11 +74,10 @@ public class CommentServiceImpl implements CommentService {
         }
         return commentsRepository.findByCandidId(candidateId);
     }
-
     @Override
     public Comments updateComment(Comments comment, int commentId) throws CommentIdNotFoundException {
         Comments existingComment = commentsRepository.findById(commentId).get();
-        if (existingComment != null) {
+        if (commentsRepository.findById(commentId).isEmpty()) {
             if (comment.getResult() != null) {
                 existingComment.setResult(comment.getResult());
             }
@@ -89,10 +90,12 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+
+
     @Override
     public void deleteComment(int commentId) throws CommentIdNotFoundException {
         Comments comment = commentsRepository.findById(commentId).get();
-        if (comment != null) {
+        if (commentsRepository.findById(commentId).isEmpty()) {
             commentsRepository.deleteById(commentId);
         } else {
             throw new CommentIdNotFoundException("comment id not found" + " " + commentId);

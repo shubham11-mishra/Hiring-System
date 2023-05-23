@@ -2,8 +2,8 @@ package com.lexisnexis.hiring.repository;
 
 import com.lexisnexis.hiring.entity.Comments;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -19,3 +19,4 @@ public interface CommentsRepository extends JpaRepository<Comments,Integer> {
 	@Query(value = "SELECT * FROM comments_table c WHERE c.candidate_id = ?1 AND  result NOT IN ('notshortlisted', 'shortlisted' ,'leveltwoselected' ,'levelonerejected' ,'leveltworejected')", nativeQuery = true)
 	Comments findCandidateByCandidateIdAndLevelOneSelected(int candidateId);
 }
+

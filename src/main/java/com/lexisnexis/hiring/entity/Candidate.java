@@ -1,6 +1,5 @@
 package com.lexisnexis.hiring.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +27,7 @@ public class Candidate {
     private LocalDateTime level1Date;
     private LocalDateTime level2Date;
     private String result;
-    @OneToOne(mappedBy = "manager",cascade = CascadeType.ALL)
+    @OneToOne
     private Employee humanResource;
     @OneToOne
     private Requisition requisitionName;

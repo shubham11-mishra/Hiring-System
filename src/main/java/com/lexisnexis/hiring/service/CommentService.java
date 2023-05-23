@@ -3,7 +3,6 @@ package com.lexisnexis.hiring.service;
 import com.lexisnexis.hiring.entity.Comments;
 import com.lexisnexis.hiring.exception.CommentIdNotFoundException;
 import com.lexisnexis.hiring.exception.NoCommentsFoundException;
-import com.lexisnexis.hiring.exception.UserNotFoundException;
 
 import java.util.List;
 
@@ -23,4 +22,3 @@ public interface CommentService {
 
     public void deleteComment(int commentId) throws CommentIdNotFoundException;
 }
-

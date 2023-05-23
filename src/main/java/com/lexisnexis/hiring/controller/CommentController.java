@@ -8,28 +8,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
-
     @Autowired
     CommentService commentlogic;
 
     @PostMapping(value = "/createcomment", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Comments> createComment(@RequestBody Comments comment) {
+    public ResponseEntity<Comments> createComent(@RequestBody Comments comment) {
         Comments newComment = commentlogic.createComment(comment);
         return new ResponseEntity<>(newComment, HttpStatus.OK);
     }
-
-
     @GetMapping("/getComments")
     public ResponseEntity<List<Comments>> getComments() throws NoCommentsFoundException {
         List<Comments> commentList = commentlogic.getComments();
         return new ResponseEntity<>(commentList, HttpStatus.OK);
     }
-
 
     @GetMapping("/getCommentsByEmpId/{employeeId}")
     public ResponseEntity<List<Comments>> getCommentsByEmpId(@PathVariable(value = "employeeId") int employeeId) throws NoCommentsFoundException {
@@ -37,13 +34,11 @@ public class CommentController {
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
-
     @GetMapping("/getCommentsByCandidId/{employeeId}")
     public ResponseEntity<List<Comments>> getCommentsByCandidId(@PathVariable(value = "employeeId") int employeeId) throws NoCommentsFoundException {
         List<Comments> comment = commentlogic.getCommentsByCandidateId(employeeId);
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
-
 
     @GetMapping("/getCommentsByCommentId/{commentId}")
     public ResponseEntity<Comments> getCommentsById(@PathVariable(value = "commentId") int commentId)
@@ -51,7 +46,6 @@ public class CommentController {
         Comments comment = commentlogic.getCommentsByCommentId(commentId);
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
-
 
     @PutMapping("/updateComment/{commentId}")
     public ResponseEntity<Comments> updateComment(@RequestBody Comments comment,
@@ -61,7 +55,6 @@ public class CommentController {
 
 
     }
-
 
     @DeleteMapping("/deleteComment/{commentId}")
     public ResponseEntity<String> deleteComments(@PathVariable(value = "commentId") int commentId)
