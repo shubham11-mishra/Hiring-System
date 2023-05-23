@@ -25,7 +25,7 @@ public class RequisitionController {
 	@Autowired
 	private RequisitionService requisitionService;
 
-	@PostMapping("addRequisition/{managerID}")
+	@PostMapping(value = "addRequisition/{managerID}")
 	public ResponseEntity<Requisition> addRequisition(@RequestBody Requisition requisition,@PathVariable int managerID) throws InvalidEmployeeID{
 		return new ResponseEntity<Requisition>(requisitionService.addRequisition(requisition,managerID),HttpStatus.OK);
 	}

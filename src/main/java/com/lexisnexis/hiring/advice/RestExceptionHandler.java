@@ -48,11 +48,28 @@ public class RestExceptionHandler {
 		ErrorDescription errorDescription = new ErrorDescription(404, "Candidate are not found", new Date());
 		return new ResponseEntity<ErrorDescription>(errorDescription, HttpStatus.BAD_REQUEST);
 	}
-//NullPointerException
-	@ExceptionHandler(value = NullPointerException.class)
-	public ResponseEntity<ErrorDescription> candidateDoesntNullPointer(
-			CandidateAlreadyExistException candidateAlreadyExistException) {
-		ErrorDescription errorDescription = new ErrorDescription(404, "Candidate are not found", new Date());
-		return new ResponseEntity<ErrorDescription>(errorDescription, HttpStatus.BAD_REQUEST);
+
+	
+	@ExceptionHandler(value = CommentIdNotFoundException.class)
+	public ResponseEntity<ErrorDescription> commentDoesntNullPointer(
+			CommentIdNotFoundException commentIdNotFoundException) {
+		ErrorDescription errorDescription = new ErrorDescription(400, commentIdNotFoundException.getMessage(), new Date());
+		return new ResponseEntity<>(errorDescription, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(value = CandidateIdIncorrect.class)
+	public ResponseEntity<ErrorDescription> candidateIdDoesntNullPointer(
+			CandidateIdIncorrect candidateIdNotFoundException) {
+		ErrorDescription errorDescription = new ErrorDescription(400, candidateIdNotFoundException.getMessage(), new Date());
+		return new ResponseEntity<>(errorDescription, HttpStatus.BAD_REQUEST);	
+	}
+	
+	@ExceptionHandler(value = NoCommentsFoundException.class)
+	public ResponseEntity<ErrorDescription> commentDoesntExistNullPointer(
+			NoCommentsFoundException commentNotFoundException) {
+		ErrorDescription errorDescription = new ErrorDescription(400, commentNotFoundException.getMessage(), new Date());
+		return new ResponseEntity<>(errorDescription, HttpStatus.BAD_REQUEST);	
+	}
+	
+	
 }

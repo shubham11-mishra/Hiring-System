@@ -1,7 +1,8 @@
 package com.lexisnexis.hiring.service;
 
 import com.lexisnexis.hiring.entity.Comments;
-import com.lexisnexis.hiring.exception.UserNotFoundException;
+import com.lexisnexis.hiring.exception.CommentIdNotFoundException;
+import com.lexisnexis.hiring.exception.NoCommentsFoundException;
 
 import java.util.List;
 
@@ -9,15 +10,15 @@ public interface CommentService {
 	
 	public Comments createComment(Comments comment) ;
 	
-	public List<Comments> getComments();
+	public List<Comments> getComments() throws NoCommentsFoundException;
 	
-	public Comments getCommentsByCommentId(int comment_id);
+	public Comments getCommentsByCommentId(int commentId) throws CommentIdNotFoundException;
 	
-	public Comments getCommentsByEmployeeId(int employee_id);
+	public List<Comments> getCommentsByEmployeeId(int employeeId) throws NoCommentsFoundException;
 	
-	public Comments getCommentsByCandidateId(int candidate_id);
+	public List<Comments> getCommentsByCandidateId(int candidateId) throws NoCommentsFoundException;
 	
-	public Comments updateComment(Comments comment, int comment_id);
+	public Comments updateComment(Comments comment, int commentId) throws CommentIdNotFoundException;
 	
-	public void deleteComment(int comment_id) throws UserNotFoundException;
+	public void deleteComment(int commentId) throws CommentIdNotFoundException;
 }

@@ -30,10 +30,10 @@ public class Candidate {
 
     private String Result;
     @OneToOne(mappedBy = "manager",cascade = CascadeType.ALL)
-    @JsonManagedReference
+//    @JsonManagedReference
     private Employee hiringManager;
     @OneToOne
-    @JsonManagedReference
+//    @JsonManagedReference
     private Requisition requisitionName;
     @CreationTimestamp
     private LocalDateTime createdDate;
