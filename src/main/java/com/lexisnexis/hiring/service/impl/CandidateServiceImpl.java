@@ -6,6 +6,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
+import com.lexisnexis.hiring.entity.Comments;
+import com.lexisnexis.hiring.repository.CommentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,9 @@ public class CandidateServiceImpl implements CandidateService {
 	@Autowired
 	private CandidateRepository candidateRepository;
 
+	@Autowired
+	private CommentsRepository commentsRepository;
+
 	private final String FOLDER_PATH = "C:/FurnitureApplication/HIRING_APPLICATION/hiring/src/main/resources/myfile/";
 
 	@SuppressWarnings("resource")
@@ -41,7 +46,7 @@ public class CandidateServiceImpl implements CandidateService {
 		newCandidate.setCandidateName(candidateRequest.getCandidateName());
 		newCandidate.setAppliedDate(candidateRequest.getAppliedDate());
 		newCandidate.setCreatedDate(candidateRequest.getCreatedDate());
-		newCandidate.setHiringManager(candidateRequest.getHiringManager());
+		newCandidate.setHumanResource(candidateRequest.getHumanResource());
 		newCandidate.setLevel1Date(candidateRequest.getLevel1Date());
 		newCandidate.setLevel2Date(candidateRequest.getLevel2Date());
 		newCandidate.setRequisitionName(candidateRequest.getRequisitionName());
@@ -76,8 +81,8 @@ public class CandidateServiceImpl implements CandidateService {
 		if (candidateRequest.getCreatedDate() != null) {
 			updateCandidate.setCreatedDate(candidateRequest.getCreatedDate());
 		} 
-		if (candidateRequest.getHiringManager() != null) {
-			updateCandidate.setHiringManager(candidateRequest.getHiringManager());
+		if (candidateRequest.getHumanResource() != null) {
+			updateCandidate.setHumanResource(candidateRequest.getHumanResource());
 		}
 		if (candidateRequest.getLevel1Date() != null) {
 			updateCandidate.setLevel1Date(candidateRequest.getLevel1Date());
@@ -138,4 +143,52 @@ public class CandidateServiceImpl implements CandidateService {
 
 	}
 
+	@Override
+	public List<Candidate> getPendingScreenCandidates(Integer managerId) {
+		List<Candidate> pendingScreenCandidates = candidateRepository.getPendingScreenCandidates(managerId);
+		if (pendingScreenCandidates.isEmpty()) {
+			throw new CandidateDoesNotExistException();
+		}
+		return pendingScreenCandidates;
+	}
+
+	@Override
+	public List<Candidate> getLevelOneCandidates(Integer managerId) {
+		List<Candidate> levelOneAllCandidates = candidateRepository.getLevelOneCandidates(managerId);
+		if (levelOneAllCandidates.isEmpty()) {
+			throw new CandidateDoesNotExistException();
+		}
+		List<Candidate> levelOneCandidates=null;
+		for (Candidate candidate:levelOneAllCandidates) {
+			if (commentsRepository.findCandidateByCandidateIdAndShortlisted(candidate.getCandidateId()) == null)
+			{
+				levelOneCandidates.add(candidate);
+			}
+		}
+		return levelOneCandidates;
+	}
+	@Override
+	public List<Candidate> getLevelTwoCandidates(Integer managerId) {
+		List<Candidate> levelAllTwoCandidates = candidateRepository.getLevelTwoCandidates(managerId);
+		if (levelAllTwoCandidates.isEmpty()) {
+			throw new CandidateDoesNotExistException();
+		}
+		List<Candidate> levelTwoCandidates=null;
+		for (Candidate candidate:levelAllTwoCandidates) {
+			if (commentsRepository.findCandidateByCandidateIdAndLevelOneSelected(candidate.getCandidateId())== null)
+			{
+				levelTwoCandidates.add(candidate);
+			}
+		}
+		return levelTwoCandidates;
+	}
+
+	@Override
+	public List<Candidate> getFinalSelectedCandidates(Integer managerId) {
+		List<Candidate> finalSelectedCandidates = candidateRepository.getFinalSelectedCandidates(managerId);
+		if (finalSelectedCandidates.isEmpty()) {
+			throw new CandidateDoesNotExistException();
+		}
+		return finalSelectedCandidates;
+	}
 }

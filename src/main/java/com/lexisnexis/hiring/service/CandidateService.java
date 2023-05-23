@@ -14,7 +14,15 @@ public interface CandidateService {
      Candidate getByCandidateId(int candidateId);
      List<Candidate> getAllCandidate();
      void deleteByCandidateId(int candidateId);
-     
+
+    List<Candidate> getPendingScreenCandidates(Integer managerId);
+
+     List<Candidate> getLevelOneCandidates(Integer managerId);
+
+    List<Candidate> getLevelTwoCandidates(Integer managerId);
+
+    List<Candidate> getFinalSelectedCandidates(Integer managerId);
+
     // Candidate candidateSave(MultipartFile file,Candidate candidate); 
     	 
      

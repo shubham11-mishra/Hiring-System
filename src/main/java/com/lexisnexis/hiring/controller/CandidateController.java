@@ -50,5 +50,21 @@ public class CandidateController {
     	candidateService.deleteByCandidateId(candidateId);
         return new ResponseEntity<String>("Candidate are " +candidateId+" deleted ", HttpStatus.OK);
     }
-  
+    @GetMapping(value = "/getPendingScreenCandidates/{managerId}")
+    public ResponseEntity<List<Candidate>> getPendingScreenCandidates(@PathVariable Integer managerId) {
+        return new ResponseEntity<List<Candidate>>(candidateService.getPendingScreenCandidates(managerId), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getLevelOneCandidates/{managerId}")
+    public ResponseEntity<List<Candidate>> getLevelOneCandidates(@PathVariable Integer managerId) {
+        return new ResponseEntity<List<Candidate>>(candidateService.getLevelOneCandidates(managerId), HttpStatus.OK);
+    }
+    @GetMapping(value = "/getLevelTwoCandidates/{managerId}")
+    public ResponseEntity<List<Candidate>> getLevelTwoCandidates(@PathVariable Integer managerId) {
+        return new ResponseEntity<List<Candidate>>(candidateService.getLevelTwoCandidates(managerId), HttpStatus.OK);
+    }
+    @GetMapping(value = "/getFinalSelectedCandidates/{managerId}")
+    public ResponseEntity<List<Candidate>> getFinalSelectedCandidates(@PathVariable Integer managerId) {
+        return new ResponseEntity<List<Candidate>>(candidateService.getFinalSelectedCandidates(managerId), HttpStatus.OK);
+    }
 }

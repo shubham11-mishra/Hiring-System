@@ -27,17 +27,13 @@ public class Candidate {
     private LocalDateTime selectionDate;
     private LocalDateTime level1Date;
     private LocalDateTime level2Date;
-
-    private String Result;
+    private String result;
     @OneToOne(mappedBy = "manager",cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private Employee hiringManager;
+    private Employee humanResource;
     @OneToOne
-    @JsonManagedReference
     private Requisition requisitionName;
     @CreationTimestamp
     private LocalDateTime createdDate;
     @UpdateTimestamp
     private LocalDateTime updatedDate;
-
 }

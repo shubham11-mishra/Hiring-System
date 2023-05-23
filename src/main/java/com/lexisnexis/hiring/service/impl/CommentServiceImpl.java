@@ -1,65 +1,101 @@
 package com.lexisnexis.hiring.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
+import com.lexisnexis.hiring.entity.Comments;
+import com.lexisnexis.hiring.exception.CandidateDoesNotExistException;
+import com.lexisnexis.hiring.exception.CommentIdNotFoundException;
+import com.lexisnexis.hiring.exception.NoCommentsFoundException;
+import com.lexisnexis.hiring.exception.NoEmployeeFoundException;
+import com.lexisnexis.hiring.repository.CandidateRepository;
+import com.lexisnexis.hiring.repository.CommentsRepository;
+import com.lexisnexis.hiring.repository.EmployeeRepository;
+import com.lexisnexis.hiring.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.lexisnexis.hiring.entity.Comments;
-import com.lexisnexis.hiring.exception.UserNotFoundException;
-import com.lexisnexis.hiring.repository.CommentsRepository;
-import com.lexisnexis.hiring.service.CommentService;
+import java.util.List;
 
 @Service
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
 
-	@Autowired
-	CommentsRepository commentsRepository;
+    @Autowired
+    private CommentsRepository commentsRepository;
 
-	public Comments createComment(Comments comment) {
-		return commentsRepository.save(comment);
-	}
+    @Autowired
+    private CandidateRepository candidateRepository;
 
-	public List<Comments> getComments() {
-		return commentsRepository.findAll();
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
-	}
-	public Comments getCommentsByCommentId(int comment_id) {
-		return commentsRepository.findByCommentId(comment_id);
+    @Override
+    public Comments createComment(Comments comment) {
+        if (employeeRepository.findById(comment.getEmployee().getEmployeeId()).isEmpty()) {
+            throw new NoEmployeeFoundException("Employee id Incorrect");
+        } else if (candidateRepository.findById(comment.getCandidate().getCandidateId()).isEmpty()) {
+            throw new CandidateDoesNotExistException();
+        } else {
+            return commentsRepository.save(comment);
+        }
+    }
 
-	}
 
-	public Comments getCommentsByEmployeeId(int employee_id) {
-		return commentsRepository.findByEmpId(employee_id);
-	}
+    @Override
+    public List<Comments> getComments() throws NoCommentsFoundException {
+        if (commentsRepository.findAll() != null) {
+            return commentsRepository.findAll();
+        } else {
+            throw new NoCommentsFoundException("No Comments Found!!");
+        }
+    }
 
-	public Comments getCommentsByCandidateId(int candidate_id) {
-		return commentsRepository.findByCandidId(candidate_id);
-	}
+    @Override
+    public Comments getCommentsByCommentId(int commentId) throws CommentIdNotFoundException {
+        if (commentsRepository.findById(commentId) == null) {
+            throw new CommentIdNotFoundException("Comment id incorrect");
+        } else {
+            return commentsRepository.findById(commentId).get();
+        }
+    }
 
-	public Comments updateComment(Comments comment, int comment_id) {
-		Optional<Comments> commentId = commentsRepository.findById(comment_id);
-		boolean present = commentId.isPresent();
-		Comments comm = null;
-		if (present == true) {
-			comm = commentId.get();
-			LocalDateTime now = LocalDateTime.now();
-			comm.setComments(comment.getComments());
-			comm.setUpdatedDate(now);
-			comm.setResult(comment.getResult());
-		}
-		return commentsRepository.save(comm);
-	}
 
-	public void deleteComment(int comment_id) throws UserNotFoundException {
-		Comments comment = commentsRepository.findByCommentId(comment_id);
-		if (comment != null) {
-			commentsRepository.deleteById(comment_id);
-		} else {
-			throw new UserNotFoundException("comment id not found" + " " + comment_id);
-		}
-	}
+    @Override
+    public List<Comments> getCommentsByEmployeeId(int employeeId) throws NoCommentsFoundException {
+        if (commentsRepository.findByEmpId(employeeId) == null) {
+            throw new NoCommentsFoundException("NO Comments found with that Employee ID");
+        } else {
+            return commentsRepository.findByEmpId(employeeId);
+        }
+    }
 
+    @Override
+    public List<Comments> getCommentsByCandidateId(int candidateId) throws NoCommentsFoundException {
+        if (commentsRepository.findByCandidId(candidateId) == null) {
+            throw new NoCommentsFoundException("NO Comments found with that Candidate id");
+        }
+        return commentsRepository.findByCandidId(candidateId);
+    }
+
+    @Override
+    public Comments updateComment(Comments comment, int commentId) throws CommentIdNotFoundException {
+        Comments existingComment = commentsRepository.findById(commentId).get();
+        if (existingComment != null) {
+            if (comment.getResult() != null) {
+                existingComment.setResult(comment.getResult());
+            }
+            if (comment.getComments() != null) {
+                existingComment.setComments(comment.getComments());
+            }
+            return commentsRepository.save(existingComment);
+        } else {
+            throw new CommentIdNotFoundException("Invalid comment id");
+        }
+    }
+
+    @Override
+    public void deleteComment(int commentId) throws CommentIdNotFoundException {
+        Comments comment = commentsRepository.findById(commentId).get();
+        if (comment != null) {
+            commentsRepository.deleteById(commentId);
+        } else {
+            throw new CommentIdNotFoundException("comment id not found" + " " + commentId);
+        }
+    }
 }

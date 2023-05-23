@@ -27,9 +27,6 @@ public class ScheduleInterview {
     @OneToOne
     private Candidate candidate;
     private LocalDateTime interviewTime;
-//    @OneToMany(mappedBy = "scheduleInterview",cascade = CascadeType.ALL)
-//    @JsonManagedReference
-//    private List <Employee> panels;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "interview_table",
             joinColumns = {
