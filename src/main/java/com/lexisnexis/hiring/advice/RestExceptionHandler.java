@@ -64,7 +64,12 @@ public class RestExceptionHandler {
 		return new ResponseEntity<>(errorDescription, HttpStatus.BAD_REQUEST);	
 	}
 	
-	
+	@ExceptionHandler(value = NoCommentsFoundException.class)
+	public ResponseEntity<ErrorDescription> commentDoesntExistNullPointer(
+			NoCommentsFoundException commentNotFoundException) {
+		ErrorDescription errorDescription = new ErrorDescription(400, commentNotFoundException.getMessage(), new Date());
+		return new ResponseEntity<>(errorDescription, HttpStatus.BAD_REQUEST);	
+	}
 	
 	
 }

@@ -12,6 +12,7 @@ import com.lexisnexis.hiring.entity.Employee;
 import com.lexisnexis.hiring.exception.CandidateDoesNotExistException;
 import com.lexisnexis.hiring.exception.CandidateIdIncorrect;
 import com.lexisnexis.hiring.exception.CommentIdNotFoundException;
+import com.lexisnexis.hiring.exception.NoCommentsFoundException;
 import com.lexisnexis.hiring.exception.NoEmployeeFoundException;
 import com.lexisnexis.hiring.repository.CandidateRepository;
 import com.lexisnexis.hiring.repository.CommentsRepository;
@@ -39,79 +40,68 @@ public class CommentServiceImpl implements CommentService {
 		} else {
 			return commentsRepository.save(comment);
 		}
-
 	}
 
 	@Override
-	public List<Comments> getComments() throws NullPointerException {
+	public List<Comments> getComments() throws NoCommentsFoundException {
 		if (commentsRepository.findAll() != null) {
 			return commentsRepository.findAll();
 		} else {
-			throw new NullPointerException("No Comments Found!!");
+			throw new NoCommentsFoundException("No Comments Found!!");
 		}
 
 	}
 
 	@Override
-	public Comments getCommentsByCommentId(int comment_id) throws CommentIdNotFoundException {
-		if (commentsRepository.findById(comment_id) == null) {
+	public Comments getCommentsByCommentId(int commentId) throws CommentIdNotFoundException {
+		if (commentsRepository.findById(commentId) == null) {
 			throw new CommentIdNotFoundException("Comment id incorrect");
 		} else {
-			return commentsRepository.findByCommentId(comment_id);
+			return commentsRepository.findById(commentId).get();
 		}
 
 	}
 
 	@Override
-	public List<Comments> getCommentsByEmployeeId(int employee_id) {
-		if (commentsRepository.findByEmpId(employee_id) == null) {
-			throw new NoEmployeeFoundException("Employee id incorrect");
+	public List<Comments> getCommentsByEmployeeId(int employeeId) throws NoCommentsFoundException {
+		if (commentsRepository.findByEmpId(employeeId) == null) {
+			throw new NoCommentsFoundException("NO Comments found with that Employee ID");
 		} else {
-			return commentsRepository.findByEmpId(employee_id);
+			return commentsRepository.findByEmpId(employeeId);
 		}
-
 	}
 
 	@Override
-	public List<Comments> getCommentsByCandidateId(int candidate_id) {
-		if (commentsRepository.findByCandidId(candidate_id) == null) {
-			throw new CandidateIdIncorrect("Candidate id incorrect");
+	public List<Comments> getCommentsByCandidateId(int candidateId) throws NoCommentsFoundException {
+		if (commentsRepository.findByCandidId(candidateId) == null) {
+			throw new NoCommentsFoundException("NO Comments found with that Candidate id");
 		}
-		return commentsRepository.findByCandidId(candidate_id);
+		return commentsRepository.findByCandidId(candidateId);
 	}
 
 	@Override
 	public Comments updateComment(Comments comment, int commentId) throws CommentIdNotFoundException {
-		System.out.print(comment.getComments());
 		Comments existingComment = commentsRepository.findByCommentId(commentId);
-
 		if (existingComment != null) {
-
 			if (comment.getResult() != null) {
 				existingComment.setResult(comment.getResult());
 			}
 			if (comment.getComments() != null) {
 				existingComment.setComments(comment.getComments());
 			}
-
-			LocalDateTime now = LocalDateTime.now();
-			existingComment.setUpdatedDate(now);
-
 			return commentsRepository.save(existingComment);
-
 		} else {
-			throw new CommentIdNotFoundException("invalid comment id");
+			throw new CommentIdNotFoundException("Invalid comment id");
 		}
-
 	}
 
 	@Override
-	public void deleteComment(int comment_id) throws CommentIdNotFoundException {
-		Comments comment = commentsRepository.findByCommentId(comment_id);
+	public void deleteComment(int commentId) throws CommentIdNotFoundException {
+		Comments comment = commentsRepository.findByCommentId(commentId);
 		if (comment != null) {
-			commentsRepository.deleteById(comment_id);
+			commentsRepository.deleteById(commentId);
 		} else {
-			throw new CommentIdNotFoundException("comment id not found" + " " + comment_id);
+			throw new CommentIdNotFoundException("comment id not found" + " " + commentId);
 		}
 	}
 
