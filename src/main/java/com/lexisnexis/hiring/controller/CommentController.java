@@ -1,8 +1,7 @@
 package com.lexisnexis.hiring.controller;
 
-import com.lexisnexis.hiring.advice.APIResponse;
 import com.lexisnexis.hiring.entity.Comments;
-import com.lexisnexis.hiring.exception.CommentIdFoundException;
+import com.lexisnexis.hiring.exception.CommentIdNotFoundException;
 import com.lexisnexis.hiring.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,35 +30,36 @@ public class CommentController {
 	}
 
 	@GetMapping("/getCommentsByEmpId/{employee_id}")
-	public ResponseEntity<Comments> getCommentsByEmpId(@PathVariable(value = "employee_id") int employee_id) {
-		Comments comment = commentlogic.getCommentsByEmployeeId(employee_id);
+	public ResponseEntity<List<Comments>> getCommentsByEmpId(@PathVariable(value = "employee_id") int employee_id) {
+		List<Comments> comment = commentlogic.getCommentsByEmployeeId(employee_id);
 		return new ResponseEntity<>(comment, HttpStatus.OK);
 	}
 
 	@GetMapping("/getCommentsByCandidId/{candidate_id}")
-	public ResponseEntity<Comments> getCommentsByCandidId(@PathVariable(value = "candidate_id") int candidate_id) {
-		Comments comment = commentlogic.getCommentsByCandidateId(candidate_id);
+	public ResponseEntity<List<Comments>> getCommentsByCandidId(@PathVariable(value = "candidate_id") int candidate_id) {
+		List<Comments> comment = commentlogic.getCommentsByCandidateId(candidate_id);
 		return new ResponseEntity<>(comment, HttpStatus.OK);
 	}
 
 	@GetMapping("/getCommentsByCommentId/{comment_id}")
 	public ResponseEntity<Comments> getCommentsById(@PathVariable(value = "comment_id") int comment_id)
-			throws CommentIdFoundException {
+			throws CommentIdNotFoundException {
 		Comments comment = commentlogic.getCommentsByCommentId(comment_id);
 		return new ResponseEntity<>(comment, HttpStatus.OK);
 	}
 
 	@PutMapping("/updateComment/{comment_id}")
-	public ResponseEntity<APIResponse> updateComment(Comments comment,
-			@PathVariable(value = "comment_id") int comment_id) {
-		APIResponse updateComment = commentlogic.updateComment(comment, comment_id);
-		return new ResponseEntity<APIResponse>(updateComment, HttpStatus.OK);
+	public ResponseEntity<Comments> updateComment(@RequestBody Comments comment,
+			@PathVariable(value = "comment_id") int comment_id) throws CommentIdNotFoundException {
+		System.out.print(comment.getComments());
+		Comments updateComment = commentlogic.updateComment(comment, comment_id);
+		return new ResponseEntity<Comments>(updateComment, HttpStatus.OK);
 
 	}
 
 	@DeleteMapping("/deleteComment/{comment_id}")
 	public ResponseEntity<String> deleteComments(@PathVariable(value = "comment_id") int comment_id)
-			throws CommentIdFoundException {
+			throws CommentIdNotFoundException {
 		commentlogic.deleteComment(comment_id);
 		return new ResponseEntity<>("Comments deleted successfully deleted!", HttpStatus.OK);
 	}

@@ -1,8 +1,7 @@
 package com.lexisnexis.hiring.service;
 
-import com.lexisnexis.hiring.advice.APIResponse;
 import com.lexisnexis.hiring.entity.Comments;
-import com.lexisnexis.hiring.exception.CommentIdFoundException;
+import com.lexisnexis.hiring.exception.CommentIdNotFoundException;
 
 import java.util.List;
 
@@ -12,13 +11,13 @@ public interface CommentService {
 	
 	public List<Comments> getComments();
 	
-	public Comments getCommentsByCommentId(int comment_id) throws CommentIdFoundException;
+	public Comments getCommentsByCommentId(int comment_id) throws CommentIdNotFoundException;
 	
-	public Comments getCommentsByEmployeeId(int employee_id);
+	public List<Comments> getCommentsByEmployeeId(int employee_id);
 	
-	public Comments getCommentsByCandidateId(int candidate_id);
+	public List<Comments> getCommentsByCandidateId(int candidate_id);
 	
-	public APIResponse updateComment(Comments comment, int commentId);
+	public Comments updateComment(Comments comment, int commentId) throws CommentIdNotFoundException;
 	
-	public void deleteComment(int comment_id) throws CommentIdFoundException;
+	public void deleteComment(int comment_id) throws CommentIdNotFoundException;
 }
