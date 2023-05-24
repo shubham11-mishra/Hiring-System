@@ -12,4 +12,7 @@ public interface ScheduleInterviewRepository extends JpaRepository<ScheduleInter
     ScheduleInterview findByInterviewId(int interviewId);
     List<ScheduleInterview> findByLevelOfInterview(String levelOfInterview);
     List<ScheduleInterview> getAllByCandidate(Candidate candidate);
+    @Query(value = "SELECT * FROM schedule_interview_table  WHERE interview_id IN (SELECT interview_id FROM interview_table WHERE employee_id = ?1)",nativeQuery = true)
+    List<ScheduleInterview> getScheduleInterviewsByPanelId(int employeeId);
+
 }

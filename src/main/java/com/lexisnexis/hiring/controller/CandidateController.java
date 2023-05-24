@@ -3,6 +3,7 @@ package com.lexisnexis.hiring.controller;
 import java.io.IOException;
 import java.util.List;
 
+import com.lexisnexis.hiring.dto.CandidateDashboarddto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -67,4 +68,38 @@ public class CandidateController {
     public ResponseEntity<List<Candidate>> getFinalSelectedCandidates(@PathVariable Integer managerId) {
         return new ResponseEntity<List<Candidate>>(candidateService.getFinalSelectedCandidates(managerId), HttpStatus.OK);
     }
+    @GetMapping(value = "/selectCandidate/{candidateId}")
+    public ResponseEntity<Candidate> selectCandidate(@PathVariable Integer candidateId) {
+        return new ResponseEntity<Candidate>(candidateService.selectCandidate(candidateId), HttpStatus.OK);
+    }
+
+    @GetMapping("/viewCandidatehistory/{id}")
+    public ResponseEntity<CandidateDashboarddto> viewCandidatehistory(@PathVariable int id){
+        return new ResponseEntity<CandidateDashboarddto>(candidateService.viewCandidatehistory(id),HttpStatus.OK);
+    }
+
+    @GetMapping("/rejectedCandidatehistory/{managerId}")
+    public ResponseEntity<List<Candidate>> rejectedCandidateHistory(@PathVariable int managerId){
+        return new ResponseEntity<List<Candidate>>(candidateService.rejectedCandidateHistory(managerId),HttpStatus.OK);
+    }
+
+
+    @GetMapping("/not-shortlisted-candidates")
+    public ResponseEntity<List<Candidate>> getListOfCandidatesWhoAreNotYetShortlisted() {
+        List<Candidate> nonShortListedCandidates = candidateService.getListOfCandidatesWhoAreNotShortlisted();
+        return ResponseEntity.ok(nonShortListedCandidates);
+    }
+
+    @GetMapping("/shortlisted-candidates")
+    public ResponseEntity<List<Candidate>> getListOfCandidatesWhoAreShortlisted() {
+        List<Candidate> shortListedCandidates = candidateService.getListOfCandidatesWhoAreShortlisted();
+        return ResponseEntity.ok(shortListedCandidates);
+    }
+
+    @GetMapping("/results/{employeeId}")
+    public ResponseEntity<List<Candidate>> getResultOfCandidates(@PathVariable int employeeId) {
+        List<Candidate> candidates = candidateService.getResultOfCandidates(employeeId);
+        return ResponseEntity.ok(candidates);
+    }
+
 }

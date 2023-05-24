@@ -3,6 +3,7 @@ package com.lexisnexis.hiring.controller;
 import com.lexisnexis.hiring.entity.Comments;
 import com.lexisnexis.hiring.exception.CommentIdNotFoundException;
 import com.lexisnexis.hiring.exception.NoCommentsFoundException;
+import com.lexisnexis.hiring.service.CandidateService;
 import com.lexisnexis.hiring.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,12 @@ import java.util.List;
 public class CommentController {
     @Autowired
     CommentService commentlogic;
+    @Autowired
+    CandidateService  candidateService;
+
 
     @PostMapping(value = "/createcomment", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Comments> createComent(@RequestBody Comments comment) {
+    public ResponseEntity<Comments> createComment(@RequestBody Comments comment) {
         Comments newComment = commentlogic.createComment(comment);
         return new ResponseEntity<>(newComment, HttpStatus.OK);
     }
@@ -52,10 +56,7 @@ public class CommentController {
                                                   @PathVariable(value = "commentId") int commentId) throws CommentIdNotFoundException {
         Comments updateComment = commentlogic.updateComment(comment, commentId);
         return new ResponseEntity<>(updateComment, HttpStatus.OK);
-
-
     }
-
     @DeleteMapping("/deleteComment/{commentId}")
     public ResponseEntity<String> deleteComments(@PathVariable(value = "commentId") int commentId)
             throws CommentIdNotFoundException {

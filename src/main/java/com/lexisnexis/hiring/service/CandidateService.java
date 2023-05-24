@@ -3,6 +3,7 @@ package com.lexisnexis.hiring.service;
 import java.io.IOException;
 import java.util.List;
 
+import com.lexisnexis.hiring.dto.CandidateDashboarddto;
 import com.lexisnexis.hiring.entity.CandidateRequest;
 import com.lexisnexis.hiring.entity.Candidate;
 import com.lexisnexis.hiring.exception.CandidateAlreadyExistException;
@@ -23,7 +24,16 @@ public interface CandidateService {
 
     List<Candidate> getFinalSelectedCandidates(Integer managerId);
 
-    // Candidate candidateSave(MultipartFile file,Candidate candidate); 
+    Candidate selectCandidate(Integer candidateId);
+
+    CandidateDashboarddto viewCandidatehistory(int id);
+
+    List<Candidate> rejectedCandidateHistory(int managerId);
+    List<Candidate> getListOfCandidatesWhoAreNotShortlisted();
+
+    List<Candidate> getListOfCandidatesWhoAreShortlisted();
+
+    List<Candidate> getResultOfCandidates(int employeeId);
     	 
      
 }

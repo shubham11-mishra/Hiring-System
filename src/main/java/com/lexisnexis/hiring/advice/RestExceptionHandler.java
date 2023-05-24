@@ -38,18 +38,16 @@ public class RestExceptionHandler {
 	@ExceptionHandler(value = CandidateAlreadyExistException.class)
 	public ResponseEntity<ErrorDescription> candidateAlreadyExist(
 			CandidateAlreadyExistException candidateAlreadyExistException) {
-		ErrorDescription errorDescription = new ErrorDescription(404, "Candidate are already exist", new Date());
-		return new ResponseEntity<ErrorDescription>(errorDescription, HttpStatus.BAD_REQUEST);
+		ErrorDescription errorDescription = new ErrorDescription(404, candidateAlreadyExistException.getMessage(), new Date());
+		return new ResponseEntity<>(errorDescription, HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler(value = CandidateDoesNotExistException.class)
-	public ResponseEntity<ErrorDescription> candidateDoesntExist(
-			CandidateAlreadyExistException candidateAlreadyExistException) {
-		ErrorDescription errorDescription = new ErrorDescription(404, "Candidate are not found", new Date());
-		return new ResponseEntity<ErrorDescription>(errorDescription, HttpStatus.BAD_REQUEST);
+	public ResponseEntity<ErrorDescription> handleCandidateDoesNotExistException(CandidateDoesNotExistException candidateDoesNotExistException) {
+		ErrorDescription error = new ErrorDescription(409, candidateDoesNotExistException.getMessage(), new Date());
+		return new ResponseEntity<>(error, HttpStatus.CONFLICT);
 	}
 
-	
 	@ExceptionHandler(value = CommentIdNotFoundException.class)
 	public ResponseEntity<ErrorDescription> commentDoesntNullPointer(
 			CommentIdNotFoundException commentIdNotFoundException) {
@@ -70,6 +68,4 @@ public class RestExceptionHandler {
 		ErrorDescription errorDescription = new ErrorDescription(400, commentNotFoundException.getMessage(), new Date());
 		return new ResponseEntity<>(errorDescription, HttpStatus.BAD_REQUEST);	
 	}
-	
-	
 }

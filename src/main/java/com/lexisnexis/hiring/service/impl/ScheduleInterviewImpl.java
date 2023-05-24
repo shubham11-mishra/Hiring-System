@@ -1,11 +1,13 @@
 package com.lexisnexis.hiring.service.impl;
 
 import com.lexisnexis.hiring.entity.Candidate;
+import com.lexisnexis.hiring.entity.Comments;
 import com.lexisnexis.hiring.entity.Employee;
 import com.lexisnexis.hiring.entity.ScheduleInterview;
 import com.lexisnexis.hiring.exception.InterviewAlreadyScheduleException;
 import com.lexisnexis.hiring.exception.InterviewNotFoundException;
 import com.lexisnexis.hiring.repository.CandidateRepository;
+import com.lexisnexis.hiring.repository.CommentsRepository;
 import com.lexisnexis.hiring.repository.EmployeeRepository;
 import com.lexisnexis.hiring.repository.ScheduleInterviewRepository;
 import com.lexisnexis.hiring.service.ScheduleInterviewService;
@@ -24,6 +26,9 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
     CandidateRepository candidateRepository;
     @Autowired
     EmployeeRepository employeeRepository;
+
+    @Autowired
+    CommentsRepository commentsRepository;
 
     @Override
     public ScheduleInterview addInterview(ScheduleInterview scheduleInterview) throws InterviewAlreadyScheduleException {
@@ -122,4 +127,17 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
             }
         }
     }
+
+    @Override
+    public List<ScheduleInterview> getScheduleInterviewsByPanelId(int employeeId){
+        List<ScheduleInterview> scheduleInterviewListByPanelId = scheduleInterviewRepository.getScheduleInterviewsByPanelId(employeeId);
+        return scheduleInterviewListByPanelId;
+    }
+
+    @Override
+    public List<Comments> getInterviewsTakenByPanelId(int employeeId){
+        List<Comments> takenInterviewListByPanelId = commentsRepository.listOfTakenInterviewsByPanelId(employeeId);
+        return takenInterviewListByPanelId;
+    }
+
 }

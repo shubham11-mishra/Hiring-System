@@ -1,6 +1,7 @@
 package com.lexisnexis.hiring.controller;
 
 import com.lexisnexis.hiring.entity.Candidate;
+import com.lexisnexis.hiring.entity.Comments;
 import com.lexisnexis.hiring.entity.ScheduleInterview;
 import com.lexisnexis.hiring.exception.InterviewAlreadyScheduleException;
 import com.lexisnexis.hiring.exception.InterviewNotFoundException;
@@ -57,5 +58,16 @@ public class ScheduleInterviewController {
     public ResponseEntity<List<ScheduleInterview>> getAllInterviewsByCandidateId(@PathVariable int candidateId) throws InterviewNotFoundException {
         List<ScheduleInterview> interviews = scheduleInterviewImpl.getAllInterviewsByCandidateId(candidateId);
         return ResponseEntity.ok(interviews);
+    }
+    @GetMapping("/interview-list/{employeeId}")
+    public ResponseEntity<List<ScheduleInterview>> getScheduleInterviewsByPanelId(@PathVariable int employeeId) {
+        List<ScheduleInterview> listOfInterviews = scheduleInterviewImpl.getScheduleInterviewsByPanelId(employeeId);
+        return ResponseEntity.ok(listOfInterviews);
+    }
+
+    @GetMapping("/interviews-taken-list/{employeeId}")
+    public ResponseEntity<List<Comments>> getInterviewsTakenByPanelId(@PathVariable int employeeId) {
+        List<Comments> listOfInterviewsTaken = scheduleInterviewImpl.getInterviewsTakenByPanelId(employeeId);
+        return ResponseEntity.ok(listOfInterviewsTaken);
     }
 }

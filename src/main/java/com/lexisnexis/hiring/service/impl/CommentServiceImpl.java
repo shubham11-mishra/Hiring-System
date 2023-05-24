@@ -1,6 +1,6 @@
 package com.lexisnexis.hiring.service.impl;
 
-
+import com.lexisnexis.hiring.entity.Candidate;
 import com.lexisnexis.hiring.entity.Comments;
 import com.lexisnexis.hiring.exception.CandidateIdIncorrect;
 import com.lexisnexis.hiring.exception.CommentIdNotFoundException;
@@ -32,6 +32,9 @@ public class CommentServiceImpl implements CommentService {
         } else if (candidateRepository.findById(comment.getCandidate().getCandidateId()).isEmpty()) {
             throw new CandidateIdIncorrect("candidate id Incorrect");
         } else {
+            Candidate candidate = candidateRepository.findById(comment.getCandidate().getCandidateId()).get();
+            candidate.setResult(comment.getResult());
+            candidateRepository.save(candidate);
             return commentsRepository.save(comment);
         }
     }
@@ -84,13 +87,14 @@ public class CommentServiceImpl implements CommentService {
             if (comment.getComments() != null) {
                 existingComment.setComments(comment.getComments());
             }
+            Candidate candidate = candidateRepository.findById(comment.getCandidate().getCandidateId()).get();
+            candidate.setResult(comment.getResult());
+            candidateRepository.save(candidate);
             return commentsRepository.save(existingComment);
         } else {
             throw new CommentIdNotFoundException("Invalid comment id");
         }
     }
-
-
 
     @Override
     public void deleteComment(int commentId) throws CommentIdNotFoundException {

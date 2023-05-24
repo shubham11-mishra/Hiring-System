@@ -2,6 +2,7 @@ package com.lexisnexis.hiring.service;
 
 import java.util.List;
 
+import com.lexisnexis.hiring.dto.ManagerRequisitionResponse;
 import com.lexisnexis.hiring.entity.Requisition;
 import com.lexisnexis.hiring.exception.InvalidEmployeeID;
 
@@ -16,4 +17,5 @@ public interface RequisitionService {
 
 	List<Requisition> getAllRequisition(int managerId) throws InvalidEmployeeID;
 
+    List<ManagerRequisitionResponse> getRequisitionByManagerId(Integer managerId, String status);
 }

@@ -2,6 +2,7 @@ package com.lexisnexis.hiring.controller;
 
 import java.util.List;
 
+import com.lexisnexis.hiring.dto.ManagerRequisitionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,5 +48,10 @@ public class RequisitionController {
 	@DeleteMapping("deleteRequisition/{jobId}")
 	public ResponseEntity<String> deleteRequisition(@PathVariable int jobId) throws InvalidEmployeeID{
 		return new ResponseEntity<String>(requisitionService.deleteRequisition(jobId),HttpStatus.OK);
+	}
+	@GetMapping("getRequisition/{managerId}/{status}")
+	public ResponseEntity<List<ManagerRequisitionResponse>> getRequisitionByManagerId(@PathVariable Integer managerId,@PathVariable String status) {
+		List<ManagerRequisitionResponse> requisitionByManagerId = requisitionService.getRequisitionByManagerId(managerId,status);
+		return new ResponseEntity<List<ManagerRequisitionResponse>>(requisitionByManagerId,HttpStatus.OK);
 	}
 }

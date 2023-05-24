@@ -14,9 +14,12 @@ public interface CommentsRepository extends JpaRepository<Comments,Integer> {
 
 	@Query(value = "SELECT * FROM comments_table c WHERE c.candidate_candidate_Id = ?1", nativeQuery = true)
 	public List<Comments> findByCandidId(int candidateId);
-	@Query(value = "SELECT * FROM comments_table c WHERE c.candidate_id = ?1 AND  result NOT IN ('notshortlisted', 'leveloneselected' ,'leveltwoselected' ,'levelonerejected' ,'leveltworejected')", nativeQuery = true)
+	@Query(value = "SELECT * FROM comments_table  WHERE candidate_candidate_id = ?1 AND  result NOT IN ('notshortlisted', 'leveloneselected' ,'leveltwoselected' ,'levelonerejected' ,'leveltworejected')", nativeQuery = true)
 	Comments findCandidateByCandidateIdAndShortlisted(int candidateId);
-	@Query(value = "SELECT * FROM comments_table c WHERE c.candidate_id = ?1 AND  result NOT IN ('notshortlisted', 'shortlisted' ,'leveltwoselected' ,'levelonerejected' ,'leveltworejected')", nativeQuery = true)
+	@Query(value = "SELECT * FROM comments_table WHERE candidate_candidate_id = ?1 AND  result NOT IN ('notshortlisted', 'shortlisted' ,'leveltwoselected' ,'levelonerejected' ,'leveltworejected')", nativeQuery = true)
 	Comments findCandidateByCandidateIdAndLevelOneSelected(int candidateId);
+
+	@Query(value = "SELECT * FROM comments_table WHERE employee_employee_id = ?1", nativeQuery = true)
+	List<Comments> listOfTakenInterviewsByPanelId(int employeeId);
 }
 

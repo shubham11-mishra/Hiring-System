@@ -1,5 +1,6 @@
 package com.lexisnexis.hiring.service.impl;
 
+import com.lexisnexis.hiring.dto.ManagerRequisitionResponse;
 import com.lexisnexis.hiring.entity.Employee;
 import com.lexisnexis.hiring.entity.Requisition;
 import com.lexisnexis.hiring.exception.InvalidEmployeeID;
@@ -9,6 +10,7 @@ import com.lexisnexis.hiring.service.RequisitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -103,5 +105,22 @@ public class RequisitionServiceImpl implements RequisitionService {
 		else {
 			throw new InvalidEmployeeID("ManagerID is not valid"); 
 		}
+	}
+	@Override
+	public List<ManagerRequisitionResponse> getRequisitionByManagerId(Integer managerId, String status)
+	{
+		ManagerRequisitionResponse managerRequitionResponse = null;
+		List<Requisition> findByManagerOrStatus = requisitionRepository.findByManagerOrStatus(managerId);
+		List<ManagerRequisitionResponse> requitionList = new ArrayList<>();
+		for (Requisition requisition : findByManagerOrStatus) {
+			managerRequitionResponse = new ManagerRequisitionResponse();
+			managerRequitionResponse.setJobProfile(requisition.getJobProfile());
+			managerRequitionResponse.setJobDescription(requisition.getJobDescription());
+			managerRequitionResponse.setProjectName(requisition.getProjectName());
+			managerRequitionResponse.setProjectPartner(requisition.getPartnerName());
+			managerRequitionResponse.setProjectAction(requisition.getStatus());
+			requitionList.add(managerRequitionResponse);
+		}
+		return requitionList;
 	}
 }
