@@ -21,7 +21,7 @@ public class CandidateRequest {
 	private LocalDateTime level1Date;
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private LocalDateTime level2Date;
-	private Employee HumanResource;
+	private Employee humanResource;
 	private Requisition requisitionName;
 	private LocalDateTime createdDate;
 	private LocalDateTime updatedDate;

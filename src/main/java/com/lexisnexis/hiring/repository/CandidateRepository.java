@@ -29,13 +29,13 @@ public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
     @Query(value = "SELECT * FROM candidate_table WHERE requisition_name_job_id IN (SELECT job_id FROM requisition_table WHERE manager_employee_id = ?1)  AND result IN ('notshortlisted'  ,'levelonerejected' ,'leveltworejected')", nativeQuery = true)
     public List<Candidate> findRejectedCandidateByManagerID(int managerId);
 
-    @Query("SELECT c FROM Candidate c WHERE c.selectionDate IS NULL")
-    List<Candidate> getListOfCandidatesWhoAreNotShortlisted();
+    @Query(value = "SELECT * FROM candidate_table WHERE selection_date IS NULL AND human_resource_employee_id =?1", nativeQuery = true)
+    public List<Candidate> getListOfCandidatesWhoAreNotShortlisted(int employeeId);
 
-    @Query("SELECT c FROM Candidate c WHERE c.selectionDate IS NOT NULL AND (c.Result = 'shortlisted' OR c.Result = 'L1')")
-    List<Candidate> getListOfCandidatesWhoAreShortlisted();
+    @Query(value = "SELECT * FROM candidate_table  WHERE selection_date IS NOT NULL AND (result = 'shortlisted' OR result = 'leveloneselected') AND human_resource_employee_id =?1 ", nativeQuery = true)
+    public List<Candidate> getListOfCandidatesWhoAreShortlisted(int employeeId);
 
-    @Query("SELECT c FROM Candidate c WHERE c.humanResource.id = :employeeId")
-    List<Candidate> getResultOfCandidates(@Param("employeeId") int employeeId);
+    @Query(value = "SELECT * FROM candidate_table WHERE  human_resource_employee_id = ?1" , nativeQuery = true)
+    public List<Candidate> getResultOfCandidates(int employeeId);
 
 }

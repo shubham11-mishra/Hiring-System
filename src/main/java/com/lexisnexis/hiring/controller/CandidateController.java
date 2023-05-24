@@ -84,21 +84,21 @@ public class CandidateController {
     }
 
 
-    @GetMapping("/not-shortlisted-candidates")
-    public ResponseEntity<List<Candidate>> getListOfCandidatesWhoAreNotYetShortlisted() {
-        List<Candidate> nonShortListedCandidates = candidateService.getListOfCandidatesWhoAreNotShortlisted();
+    @GetMapping("/not-shortlisted-candidates/{hrId}")
+    public ResponseEntity<List<Candidate>> getListOfCandidatesWhoAreNotYetShortlisted(@PathVariable int hrId) {
+        List<Candidate> nonShortListedCandidates = candidateService.getListOfCandidatesWhoAreNotShortlisted(hrId);
         return ResponseEntity.ok(nonShortListedCandidates);
     }
 
-    @GetMapping("/shortlisted-candidates")
-    public ResponseEntity<List<Candidate>> getListOfCandidatesWhoAreShortlisted() {
-        List<Candidate> shortListedCandidates = candidateService.getListOfCandidatesWhoAreShortlisted();
+    @GetMapping("/shortlisted-candidates/{hrId}")
+    public ResponseEntity<List<Candidate>> getListOfCandidatesWhoAreShortlisted(@PathVariable int hrId) {
+        List<Candidate> shortListedCandidates = candidateService.getListOfCandidatesWhoAreShortlisted(hrId);
         return ResponseEntity.ok(shortListedCandidates);
     }
 
-    @GetMapping("/results/{employeeId}")
-    public ResponseEntity<List<Candidate>> getResultOfCandidates(@PathVariable int employeeId) {
-        List<Candidate> candidates = candidateService.getResultOfCandidates(employeeId);
+    @GetMapping("/results/{hrId}")
+    public ResponseEntity<List<Candidate>> getResultOfCandidates(@PathVariable int hrId) {
+        List<Candidate> candidates = candidateService.getResultOfCandidates(hrId);
         return ResponseEntity.ok(candidates);
     }
 

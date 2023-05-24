@@ -29,9 +29,9 @@ public interface CandidateService {
     CandidateDashboarddto viewCandidatehistory(int id);
 
     List<Candidate> rejectedCandidateHistory(int managerId);
-    List<Candidate> getListOfCandidatesWhoAreNotShortlisted();
+    List<Candidate> getListOfCandidatesWhoAreNotShortlisted(int employeeId);
 
-    List<Candidate> getListOfCandidatesWhoAreShortlisted();
+    List<Candidate> getListOfCandidatesWhoAreShortlisted(int employeeId);
 
     List<Candidate> getResultOfCandidates(int employeeId);
     	 

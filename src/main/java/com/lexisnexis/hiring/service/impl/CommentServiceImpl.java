@@ -13,6 +13,7 @@ import com.lexisnexis.hiring.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -34,6 +35,12 @@ public class CommentServiceImpl implements CommentService {
         } else {
             Candidate candidate = candidateRepository.findById(comment.getCandidate().getCandidateId()).get();
             candidate.setResult(comment.getResult());
+            if(comment.getResult().equalsIgnoreCase("leveloneselected")) {
+                candidate.setLevel1Date(LocalDateTime.now());
+            }
+            if(comment.getResult().equalsIgnoreCase("leveltwoselected")) {
+                candidate.setLevel2Date(LocalDateTime.now());
+            }
             candidateRepository.save(candidate);
             return commentsRepository.save(comment);
         }

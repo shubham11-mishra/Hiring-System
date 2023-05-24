@@ -172,7 +172,7 @@ public class CandidateServiceImpl implements CandidateService {
         }
         List<Candidate> levelTwoCandidates = new ArrayList<>();
         for (Candidate candidate : levelAllTwoCandidates) {
-            if (commentsRepository.findCandidateByCandidateIdAndLevelOneSelected(candidate.getCandidateId()) == null) {
+            if (commentsRepository.findCandidateByCandidateIdAndLevelOneSelected(candidate.getCandidateId()) != null) {
                 levelTwoCandidates.add(candidate);
             }
         }
@@ -205,14 +205,13 @@ public class CandidateServiceImpl implements CandidateService {
         CandidateDashboarddto d = new CandidateDashboarddto();
         List<String> levelNames = new ArrayList<>();
         List<String> comments = new ArrayList<>();
-
         for (Comments comment : findByCandidate) {
             levelNames.add(comment.getLevelName());
             comments.add(comment.getComments());
             d.setLevelName(levelNames);
             d.setComments(comments);
-            if(comment.getLevelName().equalsIgnoreCase("l2") && comment.getResult().equalsIgnoreCase("pass")) {
-                findByCandidateId.setResult("pass");
+            if(comment.getLevelName().equalsIgnoreCase("L2") && comment.getResult().equalsIgnoreCase("leveltwoselected")) {
+                findByCandidateId.setResult("leveltwoselected");
                 d.setResult(findByCandidateId.getResult());
             }
         }
@@ -228,14 +227,14 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public List<Candidate> getListOfCandidatesWhoAreNotShortlisted() {
-        List<Candidate> nonShortlistedCandidates = candidateRepository.getListOfCandidatesWhoAreNotShortlisted();
+    public List<Candidate> getListOfCandidatesWhoAreNotShortlisted(int employeeId) {
+        List<Candidate> nonShortlistedCandidates = candidateRepository.getListOfCandidatesWhoAreNotShortlisted(employeeId);
         return nonShortlistedCandidates;
     }
 
     @Override
-    public List<Candidate> getListOfCandidatesWhoAreShortlisted() {
-        List<Candidate> ShortlistedCandidates = candidateRepository.getListOfCandidatesWhoAreShortlisted();
+    public List<Candidate> getListOfCandidatesWhoAreShortlisted(int employeeId) {
+        List<Candidate> ShortlistedCandidates = candidateRepository.getListOfCandidatesWhoAreShortlisted(employeeId);
         return ShortlistedCandidates;
     }
 
