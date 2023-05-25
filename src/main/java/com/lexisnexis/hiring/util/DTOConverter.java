@@ -4,7 +4,9 @@ import com.lexisnexis.hiring.dto.CandidateDTO;
 import com.lexisnexis.hiring.dto.RequisitionDTO;
 import com.lexisnexis.hiring.entity.Candidate;
 import com.lexisnexis.hiring.entity.Requisition;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DTOConverter {
     public CandidateDTO candidateDTOConverter(Candidate candidate)
     {

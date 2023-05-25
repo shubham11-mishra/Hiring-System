@@ -16,6 +16,7 @@ import com.lexisnexis.hiring.util.DTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -41,11 +42,14 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
             throw new InterviewAlreadyScheduleException("Interview already schedule");
         } else {
             Set<Employee> employeeList = new HashSet<>();
-            for (Employee employee:scheduleInterview.getPanels())
-            {
-                Employee employee1= employeeRepository.findById(employee.getEmployeeId()).get();
+            for (Employee employee : scheduleInterview.getPanels()) {
+                Employee employee1 = employeeRepository.findById(employee.getEmployeeId()).get();
                 employeeList.add(employee1);
             }
+            int candidateId = scheduleInterview.getCandidate().getCandidateId();
+            Candidate candidate = candidateRepository.getById(candidateId);
+            candidate.setResult(scheduleInterview.getLevelOfInterview());
+            candidateRepository.save(candidate);
             scheduleInterview.setPanels(employeeList);
             ScheduleInterview interview = scheduleInterviewRepository.save(scheduleInterview);
             return interview;
@@ -97,6 +101,7 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
             return interview;
         }
     }
+
     @Override
     public List<ScheduleInterview> getAllInterviews() {
         List<ScheduleInterview> interviews = scheduleInterviewRepository.findAll();
@@ -134,29 +139,30 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
     }
 
     @Override
-    public List<CandidateDTO> getScheduleInterviewsByPanelId(int employeeId){
+    public List<CandidateDTO> getScheduleInterviewsByPanelId(int employeeId) {
         List<ScheduleInterview> scheduleInterviewListByPanelId = scheduleInterviewRepository.getScheduleInterviewsByPanelId(employeeId);
         List<CandidateDTO> rejectedCandidateList = new ArrayList<>();
         for (ScheduleInterview scheduleInterview : scheduleInterviewListByPanelId) {
-            Candidate candidate=scheduleInterview.getCandidate();
-            if (candidate!= null) {
-                rejectedCandidateList.add(dtoConverter.candidateDTOConverter(candidate));
+            Candidate candidate = scheduleInterview.getCandidate();
+            if (candidate != null) {
+                if (candidate.getResult().equalsIgnoreCase("L1Scheduled") || candidate.getResult().equalsIgnoreCase("L1ReScheduled") || candidate.getResult().equalsIgnoreCase("L2Scheduled") || candidate.getResult().equalsIgnoreCase("L2ReScheduled")) {
+                    rejectedCandidateList.add(dtoConverter.candidateDTOConverter(candidate));
+                }
             }
         }
         return rejectedCandidateList;
     }
 
     @Override
-    public List<CandidateDTO> getInterviewsTakenByPanelId(int employeeId){
+    public List<CandidateDTO> getInterviewsTakenByPanelId(int employeeId) {
         List<Comments> takenInterviewListByPanelId = commentsRepository.listOfTakenInterviewsByPanelId(employeeId);
         List<CandidateDTO> rejectedCandidateList = new ArrayList<>();
         for (Comments comments : takenInterviewListByPanelId) {
-            Candidate candidate=comments.getCandidate();
-            if (candidate!= null) {
+            Candidate candidate = comments.getCandidate();
+            if (candidate != null) {
                 rejectedCandidateList.add(dtoConverter.candidateDTOConverter(candidate));
             }
         }
         return rejectedCandidateList;
     }
-
 }
