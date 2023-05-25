@@ -18,7 +18,7 @@ public interface CommentsRepository extends JpaRepository<Comments, Integer> {
     @Query(value = "SELECT * FROM comments_table  WHERE candidate_candidate_id = ?1 AND  result IN ('Shortlisted', 'L1Scheduled' ,'L1ReScheduled')", nativeQuery = true)
     Comments findCandidateByCandidateIdAndShortlisted(int candidateId);
 
-    @Query(value = "SELECT * FROM comments_table WHERE candidate_candidate_id = ?1 AND  result IN ('L2Scheduled', 'L2ReScheduled')", nativeQuery = true)
+    @Query(value = "SELECT * FROM comments_table WHERE candidate_candidate_id = ?1 AND  result IN ('L1Selected','L2Scheduled', 'L2ReScheduled')", nativeQuery = true)
     Comments findCandidateByCandidateIdAndLevelOneSelected(int candidateId);
 
     @Query(value = "SELECT * FROM comments_table WHERE employee_employee_id = ?1", nativeQuery = true)

@@ -62,7 +62,7 @@ public class CandidateController {
     public ResponseEntity<List<CandidateDTO>> getFinalSelectedCandidates(@PathVariable Integer managerId) {
         return new ResponseEntity<List<CandidateDTO>>(candidateService.getFinalSelectedCandidates(managerId), HttpStatus.OK);
     }
-    @GetMapping(value = "/selectCandidate/{candidateId}")
+    @PostMapping(value = "/selectCandidate/{candidateId}")
     public ResponseEntity<CandidateDTO> selectCandidate(@PathVariable Integer candidateId) {
         return new ResponseEntity<CandidateDTO>(candidateService.selectCandidate(candidateId), HttpStatus.OK);
     }

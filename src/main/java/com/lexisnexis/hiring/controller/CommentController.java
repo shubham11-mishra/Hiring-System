@@ -37,9 +37,9 @@ public class CommentController {
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
-    @GetMapping("/getCommentsByCandidId/{employeeId}")
-    public ResponseEntity<List<CommentsDTO>> getCommentsByCandidId(@PathVariable(value = "employeeId") int employeeId) {
-        List<CommentsDTO> comment = commentService.getCommentsByCandidateId(employeeId);
+    @GetMapping("/getCommentsByCandidId/{candidateID}")
+    public ResponseEntity<List<CommentsDTO>> getCommentsByCandidId(@PathVariable(value = "candidateID") int candidateID) {
+        List<CommentsDTO> comment = commentService.getCommentsByCandidateId(candidateID);
         return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
