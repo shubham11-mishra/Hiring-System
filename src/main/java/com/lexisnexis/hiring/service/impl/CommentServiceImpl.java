@@ -38,10 +38,10 @@ public class CommentServiceImpl implements CommentService {
         } else {
             Candidate candidate = candidateRepository.findById(comment.getCandidate().getCandidateId()).get();
             candidate.setResult(comment.getResult());
-            if (comment.getResult().equalsIgnoreCase("leveloneselected")) {
+            if (comment.getResult().equalsIgnoreCase("L1Selected")) {
                 candidate.setLevel1Date(LocalDateTime.now());
             }
-            if (comment.getResult().equalsIgnoreCase("leveltwoselected")) {
+            if (comment.getResult().equalsIgnoreCase("L2Selected")) {
                 candidate.setLevel2Date(LocalDateTime.now());
             }
             candidateRepository.save(candidate);

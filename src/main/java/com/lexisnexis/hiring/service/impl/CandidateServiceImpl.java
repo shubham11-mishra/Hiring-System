@@ -54,7 +54,7 @@ public class CandidateServiceImpl implements CandidateService {
         newCandidate.setRequisitionName(candidateRequest.getRequisitionName());
         newCandidate.setSelectionDate(candidateRequest.getSelectionDate());
         newCandidate.setUpdatedDate(candidateRequest.getUpdatedDate());
-        newCandidate.setResult("profileadded");
+        newCandidate.setResult("ProfileAdded");
         String originalFilename = FOLDER_PATH + candidateRequest.getCandidateResume().getOriginalFilename();
         newCandidate.setCandidateResume(originalFilename);
         candidateRepository.save(newCandidate);
@@ -208,7 +208,7 @@ public class CandidateServiceImpl implements CandidateService {
             throw new CandidateDoesNotExistException("Candidate Does not Exist");
         }
         Candidate findByCandidateId = candidateRepository.findById(candidateId).get();
-        findByCandidateId.setResult("shortlisted");
+        findByCandidateId.setResult("Shortlisted");
         findByCandidateId.setSelectionDate(LocalDateTime.now());
         Candidate candidate = candidateRepository.save(findByCandidateId);
         return dtoConverter.candidateDTOConverter(candidate);
