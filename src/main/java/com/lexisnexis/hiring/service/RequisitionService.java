@@ -1,21 +1,20 @@
 package com.lexisnexis.hiring.service;
 
+import com.lexisnexis.hiring.dto.RequisitionDTO;
+import com.lexisnexis.hiring.entity.Requisition;
+
 import java.util.List;
 
-import com.lexisnexis.hiring.dto.ManagerRequisitionResponse;
-import com.lexisnexis.hiring.entity.Requisition;
-import com.lexisnexis.hiring.exception.InvalidEmployeeID;
-
 public interface RequisitionService {
-	Requisition addRequisition(Requisition requisition, int managerID) throws InvalidEmployeeID;
+	Requisition addRequisition(Requisition requisition, int managerID) ;
 
-	Requisition updateRequisition(Requisition requisition,int jobId) throws InvalidEmployeeID;
+	Requisition updateRequisition(Requisition requisition,int jobId) ;
 
-	Requisition getRequisition(int jobId) throws InvalidEmployeeID;
+	String deleteRequisition(int jobId) ;
 
-	String deleteRequisition(int jobId) throws InvalidEmployeeID;
+	RequisitionDTO getRequisition(int jobId) ;
 
-	List<Requisition> getAllRequisition(int managerId) throws InvalidEmployeeID;
+	List<RequisitionDTO> getAllRequisition(int managerId) ;
 
-    List<ManagerRequisitionResponse> getRequisitionByManagerId(Integer managerId, String status);
+    List<RequisitionDTO> getRequisitionByManagerId(int managerId);
 }

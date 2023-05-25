@@ -164,5 +164,4 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
                 .collect(Collectors.toList());
         return new org.springframework.security.core.userdetails.User(username, employee.getEmployeePassword(), authorities);
     }
-
 }

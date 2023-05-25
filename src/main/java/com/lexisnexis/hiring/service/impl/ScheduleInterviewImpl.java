@@ -1,5 +1,6 @@
 package com.lexisnexis.hiring.service.impl;
 
+import com.lexisnexis.hiring.dto.CandidateDTO;
 import com.lexisnexis.hiring.entity.Candidate;
 import com.lexisnexis.hiring.entity.Comments;
 import com.lexisnexis.hiring.entity.Employee;
@@ -11,9 +12,11 @@ import com.lexisnexis.hiring.repository.CommentsRepository;
 import com.lexisnexis.hiring.repository.EmployeeRepository;
 import com.lexisnexis.hiring.repository.ScheduleInterviewRepository;
 import com.lexisnexis.hiring.service.ScheduleInterviewService;
+import com.lexisnexis.hiring.util.DTOConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,6 +32,8 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
 
     @Autowired
     CommentsRepository commentsRepository;
+    @Autowired
+    DTOConverter dtoConverter;
 
     @Override
     public ScheduleInterview addInterview(ScheduleInterview scheduleInterview) throws InterviewAlreadyScheduleException {
@@ -129,15 +134,29 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
     }
 
     @Override
-    public List<ScheduleInterview> getScheduleInterviewsByPanelId(int employeeId){
+    public List<CandidateDTO> getScheduleInterviewsByPanelId(int employeeId){
         List<ScheduleInterview> scheduleInterviewListByPanelId = scheduleInterviewRepository.getScheduleInterviewsByPanelId(employeeId);
-        return scheduleInterviewListByPanelId;
+        List<CandidateDTO> rejectedCandidateList = new ArrayList<>();
+        for (ScheduleInterview scheduleInterview : scheduleInterviewListByPanelId) {
+            Candidate candidate=scheduleInterview.getCandidate();
+            if (candidate!= null) {
+                rejectedCandidateList.add(dtoConverter.candidateDTOConverter(candidate));
+            }
+        }
+        return rejectedCandidateList;
     }
 
     @Override
-    public List<Comments> getInterviewsTakenByPanelId(int employeeId){
+    public List<CandidateDTO> getInterviewsTakenByPanelId(int employeeId){
         List<Comments> takenInterviewListByPanelId = commentsRepository.listOfTakenInterviewsByPanelId(employeeId);
-        return takenInterviewListByPanelId;
+        List<CandidateDTO> rejectedCandidateList = new ArrayList<>();
+        for (Comments comments : takenInterviewListByPanelId) {
+            Candidate candidate=comments.getCandidate();
+            if (candidate!= null) {
+                rejectedCandidateList.add(dtoConverter.candidateDTOConverter(candidate));
+            }
+        }
+        return rejectedCandidateList;
     }
 
 }

@@ -1,39 +1,37 @@
 package com.lexisnexis.hiring.service;
 
+import com.lexisnexis.hiring.dto.CandidateDTO;
+import com.lexisnexis.hiring.entity.Candidate;
+import com.lexisnexis.hiring.entity.CandidateRequest;
+import com.lexisnexis.hiring.exception.CandidateAlreadyExistException;
+
 import java.io.IOException;
 import java.util.List;
-
-import com.lexisnexis.hiring.dto.CandidateDashboarddto;
-import com.lexisnexis.hiring.entity.CandidateRequest;
-import com.lexisnexis.hiring.entity.Candidate;
-import com.lexisnexis.hiring.exception.CandidateAlreadyExistException;
 
 public interface CandidateService {
 
      Candidate saveCandidate(CandidateRequest candidateRequest) throws CandidateAlreadyExistException,IOException;
      Candidate updateCandidate(CandidateRequest candidateRequest)  throws IOException;
-     Candidate getByCandidateId(int candidateId);
-     List<Candidate> getAllCandidate();
+     CandidateDTO getByCandidateId(int candidateId);
+     List<CandidateDTO> getAllCandidate();
      void deleteByCandidateId(int candidateId);
 
-    List<Candidate> getPendingScreenCandidates(Integer managerId);
+    List<CandidateDTO> getPendingScreenCandidates(Integer managerId);
 
-     List<Candidate> getLevelOneCandidates(Integer managerId);
+     List<CandidateDTO> getLevelOneCandidates(Integer managerId);
 
-    List<Candidate> getLevelTwoCandidates(Integer managerId);
+    List<CandidateDTO> getLevelTwoCandidates(Integer managerId);
 
-    List<Candidate> getFinalSelectedCandidates(Integer managerId);
+    List<CandidateDTO> getFinalSelectedCandidates(Integer managerId);
 
-    Candidate selectCandidate(Integer candidateId);
+    CandidateDTO selectCandidate(Integer candidateId);
 
-    CandidateDashboarddto viewCandidatehistory(int id);
+    List<CandidateDTO> rejectedCandidateHistory(int managerId);
+    List<CandidateDTO> getListOfCandidatesWhoAreNotShortlisted(int employeeId);
 
-    List<Candidate> rejectedCandidateHistory(int managerId);
-    List<Candidate> getListOfCandidatesWhoAreNotShortlisted(int employeeId);
+    List<CandidateDTO> getListOfCandidatesWhoAreShortlisted(int employeeId);
 
-    List<Candidate> getListOfCandidatesWhoAreShortlisted(int employeeId);
-
-    List<Candidate> getResultOfCandidates(int employeeId);
+    List<CandidateDTO> getResultOfCandidates(int employeeId);
     	 
      
 }

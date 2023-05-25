@@ -1,5 +1,6 @@
 package com.lexisnexis.hiring.service;
 
+import com.lexisnexis.hiring.dto.CommentsDTO;
 import com.lexisnexis.hiring.entity.Comments;
 import com.lexisnexis.hiring.exception.CommentIdNotFoundException;
 import com.lexisnexis.hiring.exception.NoCommentsFoundException;
@@ -10,15 +11,15 @@ public interface CommentService {
 
     public Comments createComment(Comments comment) ;
 
-    public List<Comments> getComments() throws NoCommentsFoundException;
+    public List<CommentsDTO> getComments();
 
-    public Comments getCommentsByCommentId(int commentId) throws CommentIdNotFoundException;
+    public CommentsDTO getCommentsByCommentId(int commentId) ;
 
-    public List<Comments> getCommentsByEmployeeId(int employeeId) throws NoCommentsFoundException;
+    public List<CommentsDTO> getCommentsByEmployeeId(int employeeId) ;
 
-    public List<Comments> getCommentsByCandidateId(int candidateId) throws NoCommentsFoundException;
+    public List<CommentsDTO> getCommentsByCandidateId(int candidateId);
 
-    public Comments updateComment(Comments comment, int commentId) throws CommentIdNotFoundException;
+    public Comments updateComment(Comments comment, int commentId) ;
 
     public void deleteComment(int commentId) throws CommentIdNotFoundException;
 }

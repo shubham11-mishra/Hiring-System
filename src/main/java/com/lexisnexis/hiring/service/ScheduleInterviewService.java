@@ -1,5 +1,6 @@
 package com.lexisnexis.hiring.service;
 
+import com.lexisnexis.hiring.dto.CandidateDTO;
 import com.lexisnexis.hiring.entity.Candidate;
 import com.lexisnexis.hiring.entity.Comments;
 import com.lexisnexis.hiring.entity.ScheduleInterview;
@@ -24,7 +25,7 @@ public interface ScheduleInterviewService {
 
     List<ScheduleInterview> getAllInterviewsByCandidateId(int candidateId) throws InterviewNotFoundException;
 
-    List<ScheduleInterview> getScheduleInterviewsByPanelId(int employeeId);
+    List<CandidateDTO> getScheduleInterviewsByPanelId(int employeeId);
 
-    List<Comments> getInterviewsTakenByPanelId(int employeeId);
+    List<CandidateDTO> getInterviewsTakenByPanelId(int employeeId);
 }

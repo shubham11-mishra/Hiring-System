@@ -1,23 +1,14 @@
 package com.lexisnexis.hiring.controller;
 
-import java.util.List;
-
-import com.lexisnexis.hiring.dto.ManagerRequisitionResponse;
+import com.lexisnexis.hiring.dto.RequisitionDTO;
+import com.lexisnexis.hiring.entity.Requisition;
+import com.lexisnexis.hiring.service.RequisitionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.lexisnexis.hiring.entity.Requisition;
-import com.lexisnexis.hiring.exception.InvalidEmployeeID;
-import com.lexisnexis.hiring.service.RequisitionService;
+import java.util.List;
 
 @RestController
 @RequestMapping("/requisition")
@@ -27,31 +18,34 @@ public class RequisitionController {
 	private RequisitionService requisitionService;
 
 	@PostMapping(value = "addRequisition/{managerID}")
-	public ResponseEntity<Requisition> addRequisition(@RequestBody Requisition requisition,@PathVariable int managerID) throws InvalidEmployeeID{
-		return new ResponseEntity<Requisition>(requisitionService.addRequisition(requisition,managerID),HttpStatus.OK);
+	public ResponseEntity<String> addRequisition(@RequestBody Requisition requisition,@PathVariable int managerID) {
+		Requisition savedRequisition =requisitionService.addRequisition(requisition,managerID);
+		return new ResponseEntity<String>("Requisition Added Successfully With Profile "+savedRequisition.getJobProfile(),HttpStatus.OK);
 	}
 
 	@PutMapping("updateRequisition/{jobId}")
-	public ResponseEntity<Requisition> updateRequisition(@RequestBody Requisition requisition,@PathVariable int jobId) throws InvalidEmployeeID{
-		return new ResponseEntity<Requisition>(requisitionService.updateRequisition(requisition,jobId),HttpStatus.OK);
+	public ResponseEntity<String> updateRequisition(@RequestBody Requisition requisition,@PathVariable int jobId) {
+		Requisition savedRequisition =requisitionService.updateRequisition(requisition,jobId);
+		return new ResponseEntity<String>("Requisition Updated Successfully With Profile "+savedRequisition.getJobProfile(),HttpStatus.OK);
+	}
+	@DeleteMapping("deleteRequisition/{jobId}")
+	public ResponseEntity<String> deleteRequisition(@PathVariable int jobId) {
+		return new ResponseEntity<String>(requisitionService.deleteRequisition(jobId),HttpStatus.OK);
 	}
 
 	@GetMapping("getRequisition/{jobId}")
-	public ResponseEntity<Requisition> getRequisition(@PathVariable int jobId) throws InvalidEmployeeID{
-		return new ResponseEntity<Requisition>(requisitionService.getRequisition(jobId),HttpStatus.OK);
+	public ResponseEntity<RequisitionDTO> getRequisition(@PathVariable int jobId) {
+		return new ResponseEntity<RequisitionDTO>(requisitionService.getRequisition(jobId),HttpStatus.OK);
 	}
 
 	@GetMapping("getAllRequisition/{managerId}")
-	public ResponseEntity<List<Requisition>> getAllRequisition(@PathVariable int managerId)throws InvalidEmployeeID {
-		return new ResponseEntity<List<Requisition>>(requisitionService.getAllRequisition(managerId),HttpStatus.OK);
+	public ResponseEntity<List<RequisitionDTO>> getAllRequisition(@PathVariable int managerId) {
+		return new ResponseEntity<List<RequisitionDTO>>(requisitionService.getAllRequisition(managerId),HttpStatus.OK);
 	}
-	@DeleteMapping("deleteRequisition/{jobId}")
-	public ResponseEntity<String> deleteRequisition(@PathVariable int jobId) throws InvalidEmployeeID{
-		return new ResponseEntity<String>(requisitionService.deleteRequisition(jobId),HttpStatus.OK);
-	}
-	@GetMapping("getRequisition/{managerId}/{status}")
-	public ResponseEntity<List<ManagerRequisitionResponse>> getRequisitionByManagerId(@PathVariable Integer managerId,@PathVariable String status) {
-		List<ManagerRequisitionResponse> requisitionByManagerId = requisitionService.getRequisitionByManagerId(managerId,status);
-		return new ResponseEntity<List<ManagerRequisitionResponse>>(requisitionByManagerId,HttpStatus.OK);
+
+	@GetMapping("getAllRequisitionWithStatus/{managerId}")
+	public ResponseEntity<List<RequisitionDTO>> getRequisitionByManagerId(@PathVariable int managerId) {
+		List<RequisitionDTO> requisitionByManagerId = requisitionService.getRequisitionByManagerId(managerId);
+		return new ResponseEntity<List<RequisitionDTO>>(requisitionByManagerId,HttpStatus.OK);
 	}
 }

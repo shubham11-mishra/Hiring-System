@@ -42,9 +42,9 @@ public class EmployeeController {
         return ResponseEntity.ok("Hello Employee:"+p.getName());
     }
     @PostMapping("/save")
-    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee)  {
+    public ResponseEntity<String> createEmployee(@RequestBody Employee employee)  {
         Employee savedEmployee = employeeService.createEmployee(employee);
-        return new ResponseEntity<>(savedEmployee, HttpStatus.OK);
+        return new ResponseEntity<>("Employee Saved Successfully with ID "+savedEmployee.getEmployeeId(), HttpStatus.OK);
     }
     @PostMapping("/createrole")
     public ResponseEntity<Role> createRole(@RequestBody Role role)  {
@@ -56,7 +56,6 @@ public class EmployeeController {
         Employee employee = employeeService.getEmployeeById(employeeId);
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
-
     @GetMapping("/get-all")
     public ResponseEntity<List<Employee>> getAllEmployees(){
         List<Employee> employeeList = employeeService.getAllEmployees();

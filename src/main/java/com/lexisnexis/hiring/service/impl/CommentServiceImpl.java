@@ -1,8 +1,9 @@
 package com.lexisnexis.hiring.service.impl;
 
+import com.lexisnexis.hiring.dto.CommentsDTO;
 import com.lexisnexis.hiring.entity.Candidate;
 import com.lexisnexis.hiring.entity.Comments;
-import com.lexisnexis.hiring.exception.CandidateIdIncorrect;
+import com.lexisnexis.hiring.exception.CandidateDoesNotExistException;
 import com.lexisnexis.hiring.exception.CommentIdNotFoundException;
 import com.lexisnexis.hiring.exception.NoCommentsFoundException;
 import com.lexisnexis.hiring.exception.NoEmployeeFoundException;
@@ -14,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class CommentServiceImpl implements CommentService {
     @Autowired
@@ -31,14 +34,14 @@ public class CommentServiceImpl implements CommentService {
         if (employeeRepository.findById(comment.getEmployee().getEmployeeId()).isEmpty()) {
             throw new NoEmployeeFoundException("Employee id Incorrect");
         } else if (candidateRepository.findById(comment.getCandidate().getCandidateId()).isEmpty()) {
-            throw new CandidateIdIncorrect("candidate id Incorrect");
+            throw new CandidateDoesNotExistException("Candidate Does not Exist");
         } else {
             Candidate candidate = candidateRepository.findById(comment.getCandidate().getCandidateId()).get();
             candidate.setResult(comment.getResult());
-            if(comment.getResult().equalsIgnoreCase("leveloneselected")) {
+            if (comment.getResult().equalsIgnoreCase("leveloneselected")) {
                 candidate.setLevel1Date(LocalDateTime.now());
             }
-            if(comment.getResult().equalsIgnoreCase("leveltwoselected")) {
+            if (comment.getResult().equalsIgnoreCase("leveltwoselected")) {
                 candidate.setLevel2Date(LocalDateTime.now());
             }
             candidateRepository.save(candidate);
@@ -47,43 +50,62 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comments> getComments() throws NoCommentsFoundException {
-        if (commentsRepository.findAll() != null) {
-            return commentsRepository.findAll();
+    public List<CommentsDTO> getComments() throws NoCommentsFoundException {
+        if (commentsRepository.findAll().size() == 0) {
+            throw new CommentIdNotFoundException("Comment id incorrect");
         } else {
-            throw new NoCommentsFoundException("No Comments Found!!");
+            List<CommentsDTO> commentsDTOS = new ArrayList<>();
+            for (Comments comment : commentsRepository.findAll()) {
+                if (comment != null) {
+                    commentsDTOS.add(new CommentsDTO(comment.getResult(), comment.getComments()));
+                }
+            }
+            return commentsDTOS;
         }
     }
 
 
-
     @Override
-    public Comments getCommentsByCommentId(int commentId) throws CommentIdNotFoundException {
+    public CommentsDTO getCommentsByCommentId(int commentId) {
         if (commentsRepository.findById(commentId) == null) {
             throw new CommentIdNotFoundException("Comment id incorrect");
         } else {
-            return commentsRepository.findById(commentId).get();
+            Comments comments = commentsRepository.findById(commentId).get();
+            return new CommentsDTO(comments.getResult(), comments.getComments());
         }
     }
 
     @Override
-    public List<Comments> getCommentsByEmployeeId(int employeeId) throws NoCommentsFoundException {
-        if (commentsRepository.findByEmpId(employeeId) == null) {
-            throw new NoCommentsFoundException("NO Comments found with that Employee ID");
+    public List<CommentsDTO> getCommentsByEmployeeId(int employeeId) throws NoCommentsFoundException {
+        if (commentsRepository.findByEmpId(employeeId).size() == 0) {
+            throw new NoCommentsFoundException("No Comments found with that Employee ID");
         } else {
-            return commentsRepository.findByEmpId(employeeId);
+            List<CommentsDTO> commentsDTOS = new ArrayList<>();
+            for (Comments comment : commentsRepository.findByEmpId(employeeId)) {
+                if (comment != null) {
+                    commentsDTOS.add(new CommentsDTO(comment.getResult(), comment.getComments()));
+                }
+            }
+            return commentsDTOS;
         }
     }
-
 
 
     @Override
-    public List<Comments> getCommentsByCandidateId(int candidateId) throws NoCommentsFoundException {
-        if (commentsRepository.findByCandidId(candidateId) == null) {
+    public List<CommentsDTO> getCommentsByCandidateId(int candidateId) throws NoCommentsFoundException {
+        if (commentsRepository.findByCandidId(candidateId).size() == 0) {
             throw new NoCommentsFoundException("NO Comments found with that Candidate id");
+        } else {
+            List<CommentsDTO> commentsDTOS = new ArrayList<>();
+            for (Comments comment : commentsRepository.findByCandidId(candidateId)) {
+                if (comment != null) {
+                    commentsDTOS.add(new CommentsDTO(comment.getResult(), comment.getComments()));
+                }
+            }
+            return commentsDTOS;
         }
-        return commentsRepository.findByCandidId(candidateId);
     }
+
     @Override
     public Comments updateComment(Comments comment, int commentId) throws CommentIdNotFoundException {
         Comments existingComment = commentsRepository.findById(commentId).get();
