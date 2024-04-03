@@ -3,6 +3,7 @@ package com.lexisnexis.hiring.advice;
 import com.lexisnexis.hiring.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
@@ -19,12 +20,17 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = NoEmployeeFoundException.class)
+    @ExceptionHandler(value = NoEmployeeFoundException.class )
     public ResponseEntity<ErrorDescription> handleNoJobAlertFountException(NoEmployeeFoundException noEmployeeFoundException) {
         ErrorDescription error = new ErrorDescription(400, noEmployeeFoundException.getMessage(), new Date());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = UsernameNotFoundException.class )
+    public ResponseEntity<ErrorDescription> handleUsernameNotFoundException(UsernameNotFoundException usernameNotFoundException) {
+        ErrorDescription error = new ErrorDescription(400, usernameNotFoundException.getMessage(), new Date());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(value = EmployeeAlreadyExistException.class)
     public ResponseEntity<ErrorDescription> handleEmployeeAlreadyExistException(EmployeeAlreadyExistException employeeAlreadyExistException) {
         ErrorDescription error = new ErrorDescription(409, employeeAlreadyExistException.getMessage(), new Date());

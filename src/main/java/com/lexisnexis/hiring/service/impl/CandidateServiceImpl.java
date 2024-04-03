@@ -1,6 +1,7 @@
 package com.lexisnexis.hiring.service.impl;
 
 import com.lexisnexis.hiring.dto.CandidateDTO;
+import com.lexisnexis.hiring.dto.GenerateReport;
 import com.lexisnexis.hiring.entity.Candidate;
 import com.lexisnexis.hiring.entity.CandidateRequest;
 import com.lexisnexis.hiring.entity.Comments;
@@ -54,7 +55,7 @@ public class CandidateServiceImpl implements CandidateService {
         newCandidate.setRequisitionName(candidateRequest.getRequisitionName());
         newCandidate.setSelectionDate(candidateRequest.getSelectionDate());
         newCandidate.setUpdatedDate(candidateRequest.getUpdatedDate());
-        newCandidate.setResult("ProfileAdded");
+        newCandidate.setResult("profileadded");
         String originalFilename = FOLDER_PATH + candidateRequest.getCandidateResume().getOriginalFilename();
         newCandidate.setCandidateResume(originalFilename);
         candidateRepository.save(newCandidate);
@@ -117,7 +118,7 @@ public class CandidateServiceImpl implements CandidateService {
     @Override
     public List<CandidateDTO> getAllCandidate() {
         List<Candidate> findAll = candidateRepository.findAll();
-        if (findAll.size() > 0) {
+//        if (findAll.size() > 0) {
             List<Candidate> pendingScreenCandidates = findAll;
             List<CandidateDTO> candidateDTOList = new ArrayList<>();
             for (Candidate candidate : pendingScreenCandidates) {
@@ -126,9 +127,9 @@ public class CandidateServiceImpl implements CandidateService {
                 }
             }
             return candidateDTOList;
-        } else {
-            throw new CandidateDoesNotExistException("Candidate Does not Exist");
-        }
+//        } else {
+//            throw new CandidateDoesNotExistException("Candidate Does not Exist");
+//        }
     }
 
     @Override
@@ -143,7 +144,7 @@ public class CandidateServiceImpl implements CandidateService {
     @Override
     public List<CandidateDTO> getPendingScreenCandidates(Integer managerId) {
         List<Candidate> pendingScreenCandidates = candidateRepository.getPendingScreenCandidates(managerId);
-        if (pendingScreenCandidates.size() > 0) {
+//        if (pendingScreenCandidates.size() > 0) {
             List<CandidateDTO> candidateDTOList = new ArrayList<>();
             for (Candidate candidate : pendingScreenCandidates) {
                 if (candidate != null) {
@@ -151,17 +152,17 @@ public class CandidateServiceImpl implements CandidateService {
                 }
             }
             return candidateDTOList;
-        } else {
-            throw new CandidateDoesNotExistException("Candidate Does not Exist");
-        }
+//        } else {
+//            throw new CandidateDoesNotExistException("Candidate Does not Exist");
+//        }
     }
 
     @Override
     public List<CandidateDTO> getLevelOneCandidates(Integer managerId) {
         List<Candidate> levelOneAllCandidates = candidateRepository.getLevelOneCandidates(managerId);
-        if (levelOneAllCandidates.isEmpty()) {
-            throw new CandidateDoesNotExistException("Candidate Does not found");
-        } else {
+//        if (levelOneAllCandidates.isEmpty()) {
+//            throw new CandidateDoesNotExistException("Candidate Does not found");
+//        } else {
             List<CandidateDTO> levelOneCandidates = new ArrayList<>();
             for (Candidate candidate : levelOneAllCandidates) {
                 if (commentsRepository.findCandidateByCandidateIdAndShortlisted(candidate.getCandidateId()) == null) {
@@ -169,17 +170,18 @@ public class CandidateServiceImpl implements CandidateService {
                 }
             }
             return levelOneCandidates;
-        }
+//        }
     }
 
     @Override
     public List<CandidateDTO> getLevelTwoCandidates(Integer managerId) {
         List<Candidate> levelAllTwoCandidates = candidateRepository.getLevelTwoCandidates(managerId);
-        if (levelAllTwoCandidates.isEmpty()) {
-            throw new CandidateDoesNotExistException("Candidate Does not Exist");
-        }
+//        if (levelAllTwoCandidates.isEmpty()) {
+//            throw new CandidateDoesNotExistException("Candidate Does not Exist");
+//        }
         List<CandidateDTO> levelTwoCandidates = new ArrayList<>();
         for (Candidate candidate : levelAllTwoCandidates) {
+            System.out.println(candidate.toString());
             if (commentsRepository.findCandidateByCandidateIdAndLevelOneSelected(candidate.getCandidateId()) != null) {
                 levelTwoCandidates.add(dtoConverter.candidateDTOConverter(candidate));
             }
@@ -190,9 +192,9 @@ public class CandidateServiceImpl implements CandidateService {
     @Override
     public List<CandidateDTO> getFinalSelectedCandidates(Integer managerId) {
         List<Candidate> finalSelectedCandidates = candidateRepository.getFinalSelectedCandidates(managerId);
-        if (finalSelectedCandidates.isEmpty()) {
-            throw new CandidateDoesNotExistException("Candidate Does not Exist");
-        }
+//        if (finalSelectedCandidates.isEmpty()) {
+//            throw new CandidateDoesNotExistException("Candidate Does not Exist");
+//        }
         List<CandidateDTO> candidateDTOList = new ArrayList<>();
         for (Candidate candidate : finalSelectedCandidates) {
             if (candidate != null) {
@@ -204,11 +206,11 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public CandidateDTO selectCandidate(Integer candidateId) {
-        if (candidateRepository.findById(candidateId).isEmpty()) {
-            throw new CandidateDoesNotExistException("Candidate Does not Exist");
-        }
+//        if (candidateRepository.findById(candidateId).isEmpty()) {
+//            throw new CandidateDoesNotExistException("Candidate Does not Exist");
+//        }
         Candidate findByCandidateId = candidateRepository.findById(candidateId).get();
-        findByCandidateId.setResult("Shortlisted");
+        findByCandidateId.setResult("shortlisted");
         findByCandidateId.setSelectionDate(LocalDateTime.now());
         Candidate candidate = candidateRepository.save(findByCandidateId);
         return dtoConverter.candidateDTOConverter(candidate);
@@ -216,9 +218,9 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public List<CandidateDTO> rejectedCandidateHistory(int managerId) {
-        if (candidateRepository.findRejectedCandidateByManagerID(managerId).isEmpty()) {
-            throw new CandidateDoesNotExistException("Candidate Does not Exist");
-        }
+//        if (candidateRepository.findRejectedCandidateByManagerID(managerId).isEmpty()) {
+//            throw new CandidateDoesNotExistException("Candidate Does not Exist");
+//        }
         List<CandidateDTO> rejectedCandidateList = new ArrayList<>();
         for (Candidate candidate : candidateRepository.findRejectedCandidateByManagerID(managerId)) {
             if (candidate != null) {
@@ -230,23 +232,24 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public List<CandidateDTO> getListOfCandidatesWhoAreNotShortlisted(int employeeId) {
-        if (candidateRepository.getListOfCandidatesWhoAreNotShortlisted(employeeId).isEmpty()) {
-            throw new CandidateDoesNotExistException("Candidate Does not Exist");
-        }
+//        if (candidateRepository.getListOfCandidatesWhoAreNotShortlisted(employeeId).isEmpty()) {
+//            throw new CandidateDoesNotExistException("Candidate Does not Exist");
+//        }
         List<CandidateDTO> nonShortlistedCandidates = new ArrayList<>();
         for (Candidate candidate : candidateRepository.getListOfCandidatesWhoAreNotShortlisted(employeeId)) {
             if (candidate != null) {
                 nonShortlistedCandidates.add(dtoConverter.candidateDTOConverter(candidate));
             }
         }
+        System.out.println("---"+nonShortlistedCandidates.size());
         return nonShortlistedCandidates;
     }
 
     @Override
     public List<CandidateDTO> getListOfCandidatesWhoAreShortlisted(int employeeId) {
-        if (candidateRepository.getListOfCandidatesWhoAreShortlisted(employeeId).isEmpty()) {
-            throw new CandidateDoesNotExistException("Candidate Does not Exist");
-        }
+//        if (candidateRepository.getListOfCandidatesWhoAreShortlisted(employeeId).isEmpty()) {
+//            throw new CandidateDoesNotExistException("Candidate Does not Exist");
+//        }
         List<CandidateDTO> ShortlistedCandidates = new ArrayList<>();
         for (Candidate candidate : candidateRepository.getListOfCandidatesWhoAreShortlisted(employeeId)) {
             if (candidate != null) {
@@ -259,14 +262,26 @@ public class CandidateServiceImpl implements CandidateService {
     @Override
     public List<CandidateDTO> getResultOfCandidates(int employeeId) {
         List<CandidateDTO> resultOfEveryCandidateByHRId = new ArrayList<>();
-        if (candidateRepository.getResultOfCandidates(employeeId).isEmpty()) {
-            throw new CandidateDoesNotExistException("Candidate Does not Exist");
-        }
+//        if (candidateRepository.getResultOfCandidates(employeeId).isEmpty()) {
+//            throw new CandidateDoesNotExistException("Candidate Does not Exist");
+//        }
         for (Candidate candidate : candidateRepository.getResultOfCandidates(employeeId)) {
             if (candidate != null) {
                 resultOfEveryCandidateByHRId.add(dtoConverter.candidateDTOConverter(candidate));
             }
         }
         return resultOfEveryCandidateByHRId;
+    }
+
+    @Override
+    public List<CandidateDTO> getAllCandidatesReport(GenerateReport generateReport) {
+       List<CandidateDTO> candidateDTOList=new ArrayList<>();
+        for (Candidate candidate:candidateRepository.getAllCandidatesReport(generateReport.getStartDate(),generateReport.getEndDate(),generateReport.getRequisitionId())) {
+            if(candidate != null)
+            {
+                candidateDTOList.add(dtoConverter.candidateDTOConverter(candidate));
+            }
+        }
+        return candidateDTOList;
     }
 }

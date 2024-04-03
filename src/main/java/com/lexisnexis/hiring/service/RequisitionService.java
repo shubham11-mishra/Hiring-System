@@ -17,4 +17,8 @@ public interface RequisitionService {
 	List<RequisitionDTO> getAllRequisition(int managerId) ;
 
     List<RequisitionDTO> getRequisitionByManagerId(int managerId);
+
+	List<RequisitionDTO> getRequisitionByStatusOpen(int hrID);
+
+    Requisition updateRequisitionStatus(int requisitionId, String action);
 }

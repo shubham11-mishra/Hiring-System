@@ -12,13 +12,14 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Table(name = "comments_table")
 public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int commentId;
     private String result;
-    private String comments;
+    private String comment;
     private String levelName;
     @OneToOne
     private Candidate candidate;

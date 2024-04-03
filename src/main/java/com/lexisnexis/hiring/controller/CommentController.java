@@ -1,17 +1,25 @@
 package com.lexisnexis.hiring.controller;
 
 import com.lexisnexis.hiring.dto.CommentsDTO;
+import com.lexisnexis.hiring.entity.Candidate;
 import com.lexisnexis.hiring.entity.Comments;
+import com.lexisnexis.hiring.entity.Employee;
+import com.lexisnexis.hiring.entity.Role;
 import com.lexisnexis.hiring.service.CandidateService;
 import com.lexisnexis.hiring.service.CommentService;
+import com.lexisnexis.hiring.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
-@RestController
+@Controller
 @RequestMapping("/comments")
 public class CommentController {
     @Autowired
@@ -19,12 +27,41 @@ public class CommentController {
     @Autowired
     CandidateService candidateService;
 
-    @PostMapping(value = "/createcomment", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> createComment(@RequestBody Comments comment) {
-        Comments newComment = commentService.createComment(comment);
-        return new ResponseEntity<String>(comment.getComments()+"Comment Added Successfully ", HttpStatus.OK);
+    @Autowired
+    EmployeeService employeeService;
+//    @PostMapping(value = "/createcomment", consumes = "application/json", produces = "application/json")
+//    public ResponseEntity<String> createComment(@RequestBody Comments comment) {
+//        Comments newComment = commentService.createComment(comment);
+//        return new ResponseEntity<String>(comment.getComments()+"Comment Added Successfully ", HttpStatus.OK);
+//    }
+
+    @GetMapping("/addFeedback/{candidateId}/{panelId}")
+    public String getAddCommentPage(Model model, @PathVariable int candidateId, @PathVariable int panelId)
+    {
+        model.addAttribute("candidateId",candidateId);
+        model.addAttribute("panelId",panelId);
+        return "addFeedback";
     }
 
+    @PostMapping(value = "/createComment/{candidateId}/{panelId}")
+    public String createComment(Model model, @ModelAttribute Comments comment , @PathVariable int candidateId, @PathVariable int panelId) {
+
+        Employee employee=new Employee();
+        employee.setEmployeeId(panelId);
+        Candidate candidate=new Candidate();
+        candidate.setCandidateId(candidateId);
+        comment.setEmployee(employee);
+        comment.setCandidate(candidate);
+        Comments newComment = commentService.createComment(comment);
+        Set<Role> employeeRole= employeeService.getEmployeeById(panelId).getRoles();
+        for (Role role : employeeRole) {
+            if(role.getDesignation().equalsIgnoreCase("manager"))
+            {
+                return "redirect:/managerDashboard/"+panelId;
+            }
+        }
+        return "redirect:/panelDashboard/"+panelId;
+    }
     @GetMapping("/getComments")
     public ResponseEntity<List<CommentsDTO>> getComments() {
         List<CommentsDTO> commentList = commentService.getComments();
@@ -54,7 +91,7 @@ public class CommentController {
     public ResponseEntity<String> updateComment(@RequestBody Comments comment,
                                                   @PathVariable(value = "commentId") int commentId) {
         Comments updateComment = commentService.updateComment(comment, commentId);
-        return new ResponseEntity<>(updateComment.getComments() +" Comment Updated Successfully", HttpStatus.OK);
+        return new ResponseEntity<>(updateComment.getComment() +" Comment Updated Successfully", HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteComment/{commentId}")

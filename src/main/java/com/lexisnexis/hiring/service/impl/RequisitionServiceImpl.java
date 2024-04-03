@@ -35,6 +35,7 @@ public class RequisitionServiceImpl implements RequisitionService {
             Employee employee = employeeRepository.findById(requisition.getSpecificPanel().getEmployeeId()).get();
             requisition.setManager(findByEmployeeId);
             requisition.setSpecificPanel(employee);
+            requisition.setStatus("Open");
             return requisitionRepository.save(requisition);
         } else {
             throw new NoEmployeeFoundException("Manager Not Found With " + managerID);
@@ -128,6 +129,40 @@ public class RequisitionServiceImpl implements RequisitionService {
             }
             return requisitionDTOS;
         }
+    }
+
+    @Override
+    public List<RequisitionDTO> getRequisitionByStatusOpen(int hrID) {
+        List<Requisition> findByHrIdAndOpen = requisitionRepository.findByHrIdAndOpen(hrID);
+            List<RequisitionDTO> requisitionDTOS = new ArrayList<>();
+            for (Requisition requisition : findByHrIdAndOpen) {
+                if (requisition != null) {
+                    requisitionDTOS.add(dtoConverter.requisitionDTOConverter(requisition));
+                    System.out.println(requisition.getJobProfile());
+                }
+            }
+            return requisitionDTOS;
+    }
+
+    @Override
+    public Requisition updateRequisitionStatus(int requisitionId, String action) {
+        Requisition findByJobId = requisitionRepository.findByJobId(requisitionId);
+        String f = "F";
+        String c = "C";
+        String o = "O";
+        if (action.contains(f)) {
+            findByJobId.setStatus("Freeze");
+            requisitionRepository.save(findByJobId);
+        }
+        if (action.contains(c)) {
+            System.out.println("hello");
+            requisitionRepository.deleteById(requisitionId);
+        }
+        if (action.contains(o)) {
+            findByJobId.setStatus("Open");
+            requisitionRepository.save(findByJobId);
+        }
+        return findByJobId;
     }
 
 }

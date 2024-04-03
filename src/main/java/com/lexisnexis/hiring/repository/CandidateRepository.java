@@ -1,10 +1,12 @@
 package com.lexisnexis.hiring.repository;
 
+import com.lexisnexis.hiring.dto.CandidateDTO;
 import com.lexisnexis.hiring.entity.Candidate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -37,4 +39,6 @@ public interface CandidateRepository extends JpaRepository<Candidate, Integer> {
     @Query(value = "SELECT * FROM candidate_table WHERE  human_resource_employee_id = ?1" , nativeQuery = true)
     public List<Candidate> getResultOfCandidates(int employeeId);
 
+    @Query(value = "SELECT * FROM candidate_table WHERE applied_date >= ?1  AND updated_date < ?2 AND requisition_name_job_id = ?3",nativeQuery = true)
+    List<Candidate> getAllCandidatesReport(LocalDateTime startDate, LocalDateTime endDate, int requisitionId);
 }

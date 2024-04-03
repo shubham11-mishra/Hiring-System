@@ -24,6 +24,7 @@ public class DTOConverter {
     public RequisitionDTO requisitionDTOConverter(Requisition requisition)
     {
         RequisitionDTO requisitionDTO = new RequisitionDTO();
+        requisitionDTO.setJobId(requisition.getJobId());
         requisitionDTO.setJobProfile(requisition.getJobProfile());
         requisitionDTO.setJobDescription(requisition.getJobDescription());
         requisitionDTO.setStatus(requisition.getStatus());

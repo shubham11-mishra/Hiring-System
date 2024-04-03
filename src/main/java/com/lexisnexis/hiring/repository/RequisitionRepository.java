@@ -16,4 +16,7 @@ public interface RequisitionRepository extends JpaRepository<Requisition ,Intege
 
 	@Query(value = "SELECT * FROM requisition_table  WHERE manager_employee_id = ?1 AND status IN ('open','freeze')", nativeQuery = true)
 	public List<Requisition> findByManagerOrStatus(int managerId);
+
+	@Query(value = "SELECT * FROM requisition_table WHERE  status = 'open' ", nativeQuery = true)
+	List<Requisition> findByHrIdAndOpen(int hrID);
 }

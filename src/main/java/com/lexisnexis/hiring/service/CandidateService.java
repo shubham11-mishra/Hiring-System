@@ -1,6 +1,7 @@
 package com.lexisnexis.hiring.service;
 
 import com.lexisnexis.hiring.dto.CandidateDTO;
+import com.lexisnexis.hiring.dto.GenerateReport;
 import com.lexisnexis.hiring.entity.Candidate;
 import com.lexisnexis.hiring.entity.CandidateRequest;
 import com.lexisnexis.hiring.exception.CandidateAlreadyExistException;
@@ -32,6 +33,7 @@ public interface CandidateService {
     List<CandidateDTO> getListOfCandidatesWhoAreShortlisted(int employeeId);
 
     List<CandidateDTO> getResultOfCandidates(int employeeId);
-    	 
-     
+
+
+    List<CandidateDTO> getAllCandidatesReport(GenerateReport generateReport);
 }

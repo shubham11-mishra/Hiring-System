@@ -37,6 +37,7 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
         if (scheduleInterviewRepository.findById(scheduleInterview.getInterviewId()).isPresent()) {
             throw new InterviewAlreadyScheduleException("Interview already schedule");
         } else {
+            System.out.println(scheduleInterview.getInterviewTime());
             ScheduleInterview interview=null;
             Optional<ScheduleInterview> existingInterview=scheduleInterviewRepository.findByCandidateId(scheduleInterview.getCandidate().getCandidateId());
             if(existingInterview.isEmpty()) {
@@ -64,6 +65,7 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
                 newExistingInterview.setLevelOfInterview(scheduleInterview.getLevelOfInterview());
                 candidate.setResult(scheduleInterview.getLevelOfInterview());
                 candidateRepository.save(candidate);
+                newExistingInterview.setInterviewTime(scheduleInterview.getInterviewTime());
                 newExistingInterview.setPanels(employeeList);
                 interview= scheduleInterviewRepository.save(newExistingInterview);
             }
@@ -162,15 +164,6 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
                 if (candidate.getResult().equalsIgnoreCase("L1Scheduled") || candidate.getResult().equalsIgnoreCase("L1ReScheduled") || candidate.getResult().equalsIgnoreCase("L2Scheduled") || candidate.getResult().equalsIgnoreCase("L2ReScheduled")) {
                     rejectedCandidateList.add(dtoConverter.candidateDTOConverter(candidate));
                 }
-//                for(CandidateDTO candidateDTO:rejectedCandidateList)
-//                {
-//                    if(candidateDTO.getCandidateId() == candidate.getCandidateId()){
-//                        if(candidate.getResult().equalsIgnoreCase("L1Scheduled") || candidate.getResult().equalsIgnoreCase("L1ReScheduled") )
-//                        {
-//                            rejectedCandidateList.add(dtoConverter.candidateDTOConverter(candidate));
-//                        }
-//                    }
-//                }
             }
         }
         return rejectedCandidateList;
@@ -188,4 +181,21 @@ public class ScheduleInterviewImpl implements ScheduleInterviewService {
         }
         return rejectedCandidateList;
     }
+
+    @Override
+    public List<CandidateDTO> getScheduleInterviewsByHrId(int hrId) {
+       List<ScheduleInterview> scheduleInterviewListByHrId = scheduleInterviewRepository.getScheduleInterviewsByHrId(hrId);
+        List<CandidateDTO> HrInterviewList = new ArrayList<>();
+        for (ScheduleInterview scheduleInterview : scheduleInterviewListByHrId) {
+            Candidate candidate = scheduleInterview.getCandidate();
+            if (candidate != null) {
+                if (candidate.getResult().equalsIgnoreCase("L1Scheduled") || candidate.getResult().equalsIgnoreCase("L1ReScheduled") || candidate.getResult().equalsIgnoreCase("L2Scheduled") || candidate.getResult().equalsIgnoreCase("L2ReScheduled")) {
+                    HrInterviewList.add(dtoConverter.candidateDTOConverter(candidate));
+                }
+            }
+        }
+//        System.out.println(HrInterviewList.get(0).toString());
+        return HrInterviewList;
+    }
+
 }

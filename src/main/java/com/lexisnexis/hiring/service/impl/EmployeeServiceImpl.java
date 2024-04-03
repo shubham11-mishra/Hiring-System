@@ -1,5 +1,6 @@
 package com.lexisnexis.hiring.service.impl;
 
+import com.lexisnexis.hiring.config.Applicationconfig;
 import com.lexisnexis.hiring.entity.Employee;
 import com.lexisnexis.hiring.entity.Role;
 import com.lexisnexis.hiring.exception.EmployeeAlreadyExistException;
@@ -24,14 +25,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Transactional
-@Service
-public class EmployeeServiceImpl implements EmployeeService, UserDetailsService {
+@Service("customUserService")
+public class EmployeeServiceImpl implements EmployeeService , UserDetailsService {
     @Autowired
     EmployeeRepository employeeRepository;
     @Autowired
     RoleRepository roleRepository;
+
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private Applicationconfig applicationconfig;
 
     @Override
     public Employee createEmployee(Employee employee) {
@@ -39,7 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
         if (existingEmployee != null) {
             throw new EmployeeAlreadyExistException("Employee Already Found With Name" + employee.getEmployeeName());
         } else {
-            employee.setEmployeePassword(passwordEncoder.encode(employee.getEmployeePassword()));
+            employee.setEmployeePassword(applicationconfig.passwordEncoder().encode(employee.getEmployeePassword()));
             Set<Role> employeeRoles = new HashSet<>();
             for (Role role : employee.getRoles()) {
                 Role role1 = roleRepository.findByDesignation(role.getDesignation());
@@ -117,16 +119,8 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
     @Override
     public List<Employee> getAllEmployeesByManagerId(int managerId) {
         Employee manager = employeeRepository.findById(managerId).get();
-        System.out.println(manager);
-        if (manager == null) {
-            throw new NoEmployeeFoundException("No Employee Found");
-        }
-        if (employeeRepository.findAllByManager(manager).isEmpty()) {
-            throw new NoEmployeeFoundException("No Employee Found");
-        } else {
             List<Employee> employeeList = employeeRepository.findAllByManager(manager);
             return employeeList;
-        }
     }
 
     @Override
@@ -148,6 +142,7 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
         return roleRepository.save(role);
     }
 
+    @Override
     public Employee findByEmployeeName(String employeeName) {
         Optional<Employee> employee = employeeRepository.findByEmployeeName(employeeName);
         if (employee.isPresent())
@@ -155,7 +150,7 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
         return null;
     }
 
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username)  {
         Employee employee = findByEmployeeName(username);
         if (employee == null)
             throw new UsernameNotFoundException(
@@ -164,4 +159,5 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService 
                 .collect(Collectors.toList());
         return new org.springframework.security.core.userdetails.User(username, employee.getEmployeePassword(), authorities);
     }
+
 }

@@ -36,6 +36,7 @@ public class CommentServiceImpl implements CommentService {
         } else if (candidateRepository.findById(comment.getCandidate().getCandidateId()).isEmpty()) {
             throw new CandidateDoesNotExistException("Candidate Does not Exist");
         } else {
+            System.out.println(comment.getComment());
             Candidate candidate = candidateRepository.findById(comment.getCandidate().getCandidateId()).get();
             candidate.setResult(comment.getResult());
             if (comment.getResult().equalsIgnoreCase("L1Selected")) {
@@ -51,17 +52,17 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentsDTO> getComments() throws NoCommentsFoundException {
-        if (commentsRepository.findAll().size() == 0) {
-            throw new CommentIdNotFoundException("Comment id incorrect");
-        } else {
+//        if (commentsRepository.findAll().size() == 0) {
+//            throw new CommentIdNotFoundException("Comment id incorrect");
+//        } else {
             List<CommentsDTO> commentsDTOS = new ArrayList<>();
             for (Comments comment : commentsRepository.findAll()) {
                 if (comment != null) {
-                    commentsDTOS.add(new CommentsDTO(comment.getResult(), comment.getComments()));
+                    commentsDTOS.add(new CommentsDTO(comment.getResult(), comment.getComment()));
                 }
             }
             return commentsDTOS;
-        }
+//        }
     }
 
 
@@ -71,39 +72,39 @@ public class CommentServiceImpl implements CommentService {
             throw new CommentIdNotFoundException("Comment id incorrect");
         } else {
             Comments comments = commentsRepository.findById(commentId).get();
-            return new CommentsDTO(comments.getResult(), comments.getComments());
+            return new CommentsDTO(comments.getResult(), comments.getComment());
         }
     }
 
     @Override
     public List<CommentsDTO> getCommentsByEmployeeId(int employeeId) throws NoCommentsFoundException {
-        if (commentsRepository.findByEmpId(employeeId).size() == 0) {
-            throw new NoCommentsFoundException("No Comments found with that Employee ID");
-        } else {
+//        if (commentsRepository.findByEmpId(employeeId).size() == 0) {
+//            throw new NoCommentsFoundException("No Comments found with that Employee ID");
+//        } else {
             List<CommentsDTO> commentsDTOS = new ArrayList<>();
             for (Comments comment : commentsRepository.findByEmpId(employeeId)) {
                 if (comment != null) {
-                    commentsDTOS.add(new CommentsDTO(comment.getResult(), comment.getComments()));
+                    commentsDTOS.add(new CommentsDTO(comment.getResult(), comment.getComment()));
                 }
             }
             return commentsDTOS;
-        }
+//        }
     }
 
 
     @Override
     public List<CommentsDTO> getCommentsByCandidateId(int candidateId) throws NoCommentsFoundException {
-        if (commentsRepository.findByCandidId(candidateId).size() == 0) {
-            throw new NoCommentsFoundException("NO Comments found with that Candidate id");
-        } else {
+//        if (commentsRepository.findByCandidId(candidateId).size() == 0) {
+//            throw new NoCommentsFoundException("NO Comments found with that Candidate id");
+//        } else {
             List<CommentsDTO> commentsDTOS = new ArrayList<>();
             for (Comments comment : commentsRepository.findByCandidId(candidateId)) {
                 if (comment != null) {
-                    commentsDTOS.add(new CommentsDTO(comment.getResult(), comment.getComments()));
+                    commentsDTOS.add(new CommentsDTO(comment.getResult(), comment.getComment()));
                 }
             }
             return commentsDTOS;
-        }
+//        }
     }
 
     @Override
@@ -113,8 +114,8 @@ public class CommentServiceImpl implements CommentService {
             if (comment.getResult() != null) {
                 existingComment.setResult(comment.getResult());
             }
-            if (comment.getComments() != null) {
-                existingComment.setComments(comment.getComments());
+            if (comment.getComment() != null) {
+                existingComment.setComment(comment.getComment());
             }
             Candidate candidate = candidateRepository.findById(comment.getCandidate().getCandidateId()).get();
             candidate.setResult(comment.getResult());

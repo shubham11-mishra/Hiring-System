@@ -22,4 +22,6 @@ public interface EmployeeService {
     List<Employee> getAllEmployeesByDesignation(String designation);
 
     Role createRole(Role role);
+
+    Employee findByEmployeeName(String username);
 }

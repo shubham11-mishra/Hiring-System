@@ -28,4 +28,6 @@ public interface ScheduleInterviewService {
     List<CandidateDTO> getScheduleInterviewsByPanelId(int employeeId);
 
     List<CandidateDTO> getInterviewsTakenByPanelId(int employeeId);
+
+    List<CandidateDTO> getScheduleInterviewsByHrId(int hrId);
 }
